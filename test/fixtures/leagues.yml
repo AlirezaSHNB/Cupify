@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  points_for_win: 1
+  points_for_draw: 1
+  points_for_lost: 1
+  is_round_trip: false
+
+two:
+  points_for_win: 1
+  points_for_draw: 1
+  points_for_lost: 1
+  is_round_trip: false

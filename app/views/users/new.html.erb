@@ -1,0 +1,183 @@
+    <%# ----- add these lines here: ----- %>
+
+    <h1>Sign Up</h1>
+
+    <%= form_for @user do |form| %>
+    <div>
+        <%= form.label :username %>
+        <%= form.text_field :username, id: 'username-field' %>
+        <span id="username-status"></span>
+    </div>
+    <div>
+        <%= form.label :email %>
+        <%= form.text_field :email, id: 'email-field' %>
+        <span id="email-status"></span>
+    </div>
+    <div class="field">
+        <%= form.label :date_of_birth %>
+        <%= form.text_field :date_of_birth, id: 'date-of-birth-field', class: 'datepicker' %>
+    </div>
+    <div>
+        <%= form.label :gender %>
+        <%= form.select :gender, User.genders.keys, prompt: 'Select gender' %>
+    </div>
+
+    <div>
+        <%= form.label :password %>
+        <%= form.password_field :password, id: 'password-field' %>
+    </div>
+    <div>
+        <%= form.label :password_confirmation %>
+        <%= form.password_field :password_confirmation, id: 'password-confirmation-field' %>
+        <span id="password-confirmation-status"></span>
+    </div>
+    <div>
+        <%= form.submit "Sign up!", class: 'btn btn-primary' %>
+    </div>
+    <% end %>
+    <!-- Include the necessary JavaScript libraries -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
+    <script>
+    // Live check for username availability
+    $('#username-field').on('input', function() {
+        var username = $(this).val();
+        if (username.length > 0) {
+        var authenticityToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajax({
+            url: '/check_username_availability', // Replace with the appropriate route to check username availability
+            method: 'POST',
+            dataType: 'json',
+            headers: { 'X-CSRF-Token': authenticityToken },
+            data: { username: username },
+            success: function(response) {
+            if (!response.available) {
+                $('#username-status').text('This username is taken').removeClass('success').addClass('error');
+            } else {
+                $('#username-status').text('').removeClass('error').addClass('success');
+            }
+            }
+        });
+        } else {
+        $('#username-status').empty();
+        }
+    });
+
+    // Live validate email format
+    $('#email-field').on('input', function() {
+        var email = $(this).val();
+        if (email.length > 0) {
+        // Add email format validation logic here
+        if (!isValidEmail(email)) {
+            $('#email-status').text('Email format is invalid').removeClass('success').addClass('error');
+        } else {
+            $('#email-status').text('').removeClass('error').addClass('success');
+        }
+        } else {
+        $('#email-status').empty();
+        }
+    });
+
+    function isValidEmail(email) {
+        // Regular expression pattern for email validation
+        var emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // Check if the email matches the pattern
+        return emailRegex.test(email);
+    }
+
+    // Beautiful date picker for birth of date
+    $('.datepicker').datepicker();
+
+    function live_check_password_confirmation() {
+        var password = $('#password-field').val();
+        var passwordConfirmation = $('#password-confirmation-field').val();
+        if (passwordConfirmation.length > 0) {
+        if (!(passwordConfirmation === password)) {
+            $('#password-confirmation-status').text('Passwords do not match').removeClass('success').addClass('error');
+        } else {
+            $('#password-confirmation-status').text('').removeClass('error').addClass('success');
+        }
+        } else {
+        $('#password-confirmation-status').empty();
+        }
+    };
+
+    // Live check password confirmation
+    $('#password-confirmation-field').on('input', function() {
+        live_check_password_confirmation()
+    });
+    $('#password-field').on('input', function() {
+        live_check_password_confirmation()
+    });
+
+    </script>
+    <style>
+    body {
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        color: #333;
+        font-size: 24px;
+        margin-bottom: 20px;
+        margin-left: 30px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 5px;
+        margin-left: 30px;
+        font-weight: bold;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    select {
+        width: 50%;
+        padding: 10px;
+        font-size: 16px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        margin-bottom: 10px;
+        margin-left: 30px;
+    }
+
+    .field {
+        margin-bottom: 15px;
+    }
+
+    .phone-number-field {
+        display: flex;
+        align-items: center;
+    }
+
+    .phone-number-field input {
+        flex: 1;
+        margin-right: 10px;
+    }
+
+    #username-status,
+    #email-status,
+    #password-confirmation-status {
+        display: block;
+        margin-top: 5px;
+        font-size: 14px;
+    }
+
+    .btn {
+        padding: 10px 20px;
+        font-size: 16px;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+    }
+
+    .btn:hover {
+        background-color: #45a049;
+    }
+    </style>
+    <%# ----- end of added lines ----- %>

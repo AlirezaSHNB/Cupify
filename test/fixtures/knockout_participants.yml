@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  knockout: one
+  participant: one
+
+two:
+  knockout: two
+  participant: two
