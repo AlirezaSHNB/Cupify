@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_04_110119) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -35,6 +35,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_110119) do
     t.date "end_date"
     t.integer "field", null: false
     t.integer "number_of_players", null: false
+    t.integer "state", default: 0, null: false
+    t.boolean "away_goal", default: false
+    t.integer "min_number_of_participants", default: 3
+    t.integer "max_number_of_participants", default: 20
     t.index ["winner_id"], name: "index_cups_on_winner_id"
   end
 
