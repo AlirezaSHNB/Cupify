@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_03_170113) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_04_110119) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -31,6 +31,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_170113) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "winner_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.integer "field", null: false
+    t.integer "number_of_players", null: false
     t.index ["winner_id"], name: "index_cups_on_winner_id"
   end
 
@@ -63,6 +67,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_170113) do
     t.datetime "updated_at", null: false
     t.bigint "cup_id", null: false
     t.bigint "winner_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.text "graph"
+    t.text "graph_assignment"
+    t.boolean "third_place_match", default: false
     t.index ["cup_id"], name: "index_knockouts_on_cup_id"
     t.index ["winner_id"], name: "index_knockouts_on_winner_id"
   end
@@ -85,6 +94,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_170113) do
     t.datetime "updated_at", null: false
     t.bigint "cup_id", null: false
     t.bigint "winner_id"
+    t.date "start_date"
+    t.date "end_date"
+    t.text "ranking"
     t.index ["cup_id"], name: "index_leagues_on_cup_id"
     t.index ["winner_id"], name: "index_leagues_on_winner_id"
   end
@@ -124,15 +136,19 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_03_170113) do
     t.bigint "participant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number"
     t.index ["participant_id"], name: "index_player_participants_on_participant_id"
     t.index ["player_id"], name: "index_player_participants_on_player_id"
   end
 
   create_table "players", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
-    t.string "name"
+    t.string "nickname"
     t.date "date_of_birth"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "first_name"
+    t.string "last_name"
+    t.string "username", null: false
   end
 
   create_table "role_accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
