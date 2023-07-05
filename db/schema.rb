@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_05_103317) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -36,7 +36,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.integer "field", null: false
     t.integer "number_of_players", null: false
     t.integer "state", default: 0, null: false
-    t.boolean "away_goal", default: false
     t.integer "min_number_of_participants", default: 3
     t.integer "max_number_of_participants", default: 20
     t.index ["winner_id"], name: "index_cups_on_winner_id"
@@ -76,6 +75,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.text "graph"
     t.text "graph_assignment"
     t.boolean "third_place_match", default: false
+    t.boolean "away_goal", default: false
+    t.integer "state", default: 0, null: false
     t.index ["cup_id"], name: "index_knockouts_on_cup_id"
     t.index ["winner_id"], name: "index_knockouts_on_winner_id"
   end
@@ -85,6 +86,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.bigint "participant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_wins", default: 0, null: false
+    t.integer "number_of_draws", default: 0, null: false
+    t.integer "number_of_losts", default: 0, null: false
+    t.integer "points", default: 0, null: false
     t.index ["league_id"], name: "index_league_participants_on_league_id"
     t.index ["participant_id"], name: "index_league_participants_on_participant_id"
   end
@@ -101,6 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.date "start_date"
     t.date "end_date"
     t.text "ranking"
+    t.boolean "away_goal", default: false
+    t.integer "state", default: 0, null: false
     t.index ["cup_id"], name: "index_leagues_on_cup_id"
     t.index ["winner_id"], name: "index_leagues_on_winner_id"
   end
@@ -110,6 +117,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.bigint "participant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_scores", default: 0, null: false
     t.index ["match_id"], name: "index_match_participants_on_match_id"
     t.index ["participant_id"], name: "index_match_participants_on_participant_id"
   end
@@ -123,6 +131,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.bigint "league_id"
     t.bigint "knockout_id"
     t.bigint "winner_id"
+    t.integer "state", default: 0, null: false
     t.index ["home_team_id"], name: "index_matches_on_home_team_id"
     t.index ["knockout_id"], name: "index_matches_on_knockout_id"
     t.index ["league_id"], name: "index_matches_on_league_id"
@@ -176,6 +185,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.datetime "updated_at", null: false
     t.bigint "match_id", null: false
     t.bigint "winner_id"
+    t.integer "state", default: 0, null: false
     t.index ["match_id"], name: "index_rounds_on_match_id"
     t.index ["winner_id"], name: "index_rounds_on_winner_id"
   end
@@ -184,6 +194,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
     t.boolean "own_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.bigint "round_id", null: false
+    t.bigint "participant_id", null: false
+    t.bigint "player_id"
+    t.index ["participant_id"], name: "index_scores_on_participant_id"
+    t.index ["player_id"], name: "index_scores_on_player_id"
+    t.index ["round_id"], name: "index_scores_on_round_id"
   end
 
   create_table "users", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -224,5 +240,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_04_134011) do
   add_foreign_key "role_accesses", "roles"
   add_foreign_key "rounds", "matches"
   add_foreign_key "rounds", "participants", column: "winner_id"
+  add_foreign_key "scores", "participants"
+  add_foreign_key "scores", "players"
+  add_foreign_key "scores", "rounds"
   add_foreign_key "users", "roles"
 end
