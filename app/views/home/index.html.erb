@@ -1,1 +1,146 @@
+<style>
+/* CSS styles */
+h1 {
+    font-size: 2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 2rem;
+}
+
+th, td {
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+}
+
+th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
+
+tr:hover {
+    background-color: #f9f9f9;
+}
+
+.button {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    background-color: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.button:hover {
+    background-color: #45a049;
+}
+</style>
+
+<!-- Updated HTML structure with CSS classes -->
 <h1 class="text-7xl font-bold underline">Welcome</h1>
+
+<h1>Cups</h1>
+<table>
+<thead>
+    <tr>
+    <th>Name</th>
+    <th>Field</th>
+    <th>State</th>
+    <th>Start Date</th>
+    <th>End Date</th>
+    <th>Winner</th>
+    <th></th>
+    </tr>
+</thead>
+<tbody>
+    <% @cups.each do |cup| %>
+    <tr>
+        <td><%= cup.name %></td>
+        <td><%= cup.field %></td>
+        <td><%= cup.state %></td>
+        <td><%= cup.start_date %></td>
+        <td><%= cup.end_date %></td>
+        <td><%= cup.winner&.name %></td>
+        <td><%= link_to 'Show', cup_path(cup), class: 'button' %></td>
+    </tr>
+    <% end %>
+</tbody>
+</table>
+<%= link_to 'Show All Cups', cups_path, class: 'button' %>
+<%= link_to 'Create New Cup', cups_path, class: 'button' %>
+
+<h1>Teams</h1>
+<table>
+<thead>
+    <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    </tr>
+</thead>
+<tbody>
+    <% @teams.each do |team| %>
+    <tr>
+        <td><%= team.name %></td>
+        <td><%= link_to 'Show Cups', "team_cups_path(team)", class: 'button' %></td>
+        <td><%= link_to 'Show Players', "team_players_path(team)", class: 'button' %></td>
+    </tr>
+    <% end %>
+</tbody>
+</table>
+<%= link_to 'Show All Teams', "teams_path", class: 'button' %>
+
+<h1>Persons</h1>
+<table>
+<thead>
+    <tr>
+    <th>Name</th>
+    <th></th>
+    <th></th>
+    </tr>
+</thead>
+<tbody>
+    <% @persons.each do |person| %>
+    <tr>
+        <td><%= person.name %></td>
+        <td><%= link_to 'Show Cups', "person_cups_path(person)", class: 'button' %></td>
+        <td><%= link_to 'Show Players', "person_players_path(person)", class: 'button' %></td>
+    </tr>
+    <% end %>
+</tbody>
+</table>
+<%= link_to 'Show All Persons', "persons_path", class: 'button' %>
+
+<h1>Players</h1>
+<table>
+<thead>
+    <tr>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Username</th>
+    <th>Nickname</th>
+    <th>Date of Birth</th>
+    <th>Career</th>
+    <th>Current Teams</th>
+    </tr>
+</thead>
+<tbody>
+    <% @players.each do |player| %>
+    <tr>
+        <td><%= player.first_name %></td>
+        <td><%= player.last_name %></td>
+        <td><%= player.username %></td>
+        <td><%= player.nickname %></td>
+        <td><%= player.date_of_birth %></td>
+        <td><%= link_to 'Career', "player_career_path(player)", class: 'button' %></td>
+        <td><%= link_to 'Current Teams', "player_current_teams_path(player)", class: 'button' %></td>
+    </tr>
+    <% end %>
+</tbody>
+</table>
+<%= link_to 'Show All Players', players_path, class: 'button' %>

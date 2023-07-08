@@ -14,13 +14,13 @@ class SessionsController < ApplicationController
         # Verify user exists in db and run has_secure_password's .authenticate() 
         # method to see if the password submitted on the login form was correct: 
         if user && user.authenticate(params[:login][:password]) 
-        # Save the user.id in that user's session cookie:
-        session[:user_id] = user.id.to_s
-        redirect_to root_path, notice: 'Successfully logged in!'
+            # Save the user.id in that user's session cookie:
+            session[:user_id] = user.id.to_s
+            redirect_to root_path, notice: 'Successfully logged in!'
         else
-        # if email or password incorrect, re-render login page:
-        flash.now.alert = "Incorrect email or password, try again."
-        render :new, status: :unprocessable_entity
+            # if email or password incorrect, re-render login page:
+            flash.now.alert = "Incorrect email or password, try again."
+            render :new, status: :unprocessable_entity
         end
     end
 

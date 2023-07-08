@@ -1,9 +1,6 @@
 class UsersController < ApplicationController
-
     protect_from_forgery with: :exception
     before_action :authorize, only: [:dashboard, :show, :edit, :update, :destroy]
-
-    # ----- add these lines here: -----
 
     def index
         @users = User.all
@@ -24,18 +21,18 @@ class UsersController < ApplicationController
         @user.email.downcase!
         result = @user.save
         if result
-        # If user saves in the db successfully:
-        flash[:notice] = "Account created successfully!"
-        redirect_to root_path
+            # If user saves in the db successfully:
+            flash[:notice] = "Account created successfully!"
+            redirect_to root_path
         else
         if @user.errors.any?
             @user.errors.full_messages.each do |message|
             puts message
             end
         end
-        # If user fails model validation - probably a bad password or duplicate email:
-        flash.now.alert = "Oops, couldn't create account. Please make sure you are using a valid email and password and try again."
-        render :new
+            # If user fails model validation - probably a bad password or duplicate email:
+            flash.now.alert = "Oops, couldn't create account. Please make sure you are using a valid email and password and try again."
+            render :new
         end
     end
 
@@ -47,9 +44,9 @@ class UsersController < ApplicationController
         @user = User.find(params[:id])
 
         if @user.update(user_params)
-        redirect_to @user, notice: 'User was successfully updated.'
+            redirect_to @user, notice: 'User was successfully updated.'
         else
-        render :edit
+            render :edit
         end
     end
 
@@ -73,9 +70,9 @@ class UsersController < ApplicationController
     private
 
     def user_params
-        parsed_params = params.require(:user).permit(:username, :email, :date_of_birth, :gender, :password, :password_confirmation)
+        parsed_params = params.require(:user).permit(:username, :email, :gender, :password, :password_confirmation)
+        parsed_params[:date_of_birth] = Date.strptime(params[:user][:date_of_birth], "%m/%d/%Y")
+        parsed_params
     end
-
-    # ----- end of added lines -----
 
 end
