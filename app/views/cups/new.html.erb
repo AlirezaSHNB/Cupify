@@ -1,0 +1,205 @@
+<!-- cup/new.html.erb -->
+
+<!-- Cup Information Form -->
+<h2>Create a New Cup</h2>
+
+<%= form_tag({ controller: 'cups', action: 'create' }, method: 'post', id: 'cup_form', class: 'cup-form') do %>
+    <div class="form-group">
+        <%= label_tag :name, 'Name' %>
+        <%= text_field_tag :name, '', class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :type, 'Type' %>
+        <%= select_tag :type, options_for_select(Cup.filed.keys.map { |type| [type.titleize, type] }), class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :start_date, 'Start Date' %>
+        <%= text_field_tag :start_date, '', class: 'form-control datepicker' %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :end_date, 'End Date' %>
+        <%= text_field_tag :end_date, '', class: 'form-control datepicker' %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :num_players, 'Number of Players' %>
+        <%= number_field_tag :num_players, '', class: 'form-control' %>
+    </div>
+
+    <%= button_to 'Next', '#', class: 'btn btn-primary next-button' %>
+<% end %>
+
+<!-- Cup Configuration Form -->
+<div id="cup_config" class="cup-config">
+    <h2>Cup Configuration</h2>
+
+    <div class="form-group">
+        <%= label_tag :config_option, 'Configuration Option' %>
+        <%= select_tag :config_option, options_for_select(Cup.configuration_options.keys.map { |option| [option.titleize, option] }), class: 'form-control' %>
+    </div>
+
+    <!-- Additional configuration options specific to each cup type -->
+    <div id="league_options" class="cup-option" style="display: none;">
+        <div class="form-group">
+            <%= label_tag :points_for_win, 'Points for Win' %>
+            <%= number_field_tag :points_for_win, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :points_for_draw, 'Points for Draw' %>
+            <%= number_field_tag :points_for_draw, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :points_for_lost, 'Points for Lost' %>
+            <%= number_field_tag :points_for_lost, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :round_trip, 'Round Trip' %>
+            <%= check_box_tag :round_trip %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :win_order, 'Win Order' %>
+            <%= select_tag :win_order, options_for_select(Cup.win_order_items.keys.map { |item| [item.titleize, item] }), class: 'form-control', multiple: true %>
+        </div>
+    </div>
+
+    <div id="knockout_options" class="cup-option" style="display: none;">
+        <div class="form-group">
+            <%= label_tag :third_place_match, 'Third Place Match' %>
+            <%= check_box_tag :third_place_match %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :round_trip, 'Round Trip' %>
+            <%= check_box_tag :round_trip %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :away_goal, 'Away Goal' %>
+            <%= check_box_tag :away_goal %>
+        </div>
+    </div>
+
+    <div id="combinations_options" class="cup-option" style="display: none;">
+        <div class="form-group">
+            <%= label_tag :points_for_win, 'Points for Win' %>
+            <%= number_field_tag :points_for_win, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :points_for_draw, 'Points for Draw' %>
+            <%= number_field_tag :points_for_draw, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :points_for_lost, 'Points for Lost' %>
+            <%= number_field_tag :points_for_lost, '', class: 'form-control' %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :third_place_match, 'Third Place Match' %>
+            <%= check_box_tag :third_place_match %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :round_trip, 'Round Trip' %>
+            <%= check_box_tag :round_trip %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :away_goal, 'Away Goal' %>
+            <%= check_box_tag :away_goal %>
+        </div>
+
+        <div class="form-group">
+            <%= label_tag :win_order, 'Win Order' %>
+            <%= select_tag :win_order, options_for_select(Cup.win_order_items.keys.map { |item| [item.titleize, item] }), class: 'form-control', multiple: true %>
+        </div>
+    </div>
+
+    <%= submit_tag 'Save', class: 'btn btn-primary save-button', id: 'save_button', disabled: true %>
+</div>
+
+<style>
+.cup-form {
+max-width: 400px;
+margin: 0 auto;
+padding: 20px;
+background-color: #f7f7f7;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.cup-config {
+display: none;
+max-width: 400px;
+margin: 20px auto;
+padding: 20px;
+background-color: #f7f7f7;
+border: 1px solid #ccc;
+border-radius: 5px;
+}
+
+.cup-option {
+display: none;
+margin-top: 10px;
+}
+
+.next-button {
+margin-top: 20px;
+}
+
+.save-button {
+margin-top: 20px;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+const nextButton = document.getElementById('next_button');
+const cupConfig = document.getElementById('cup_config');
+const saveButton = document.getElementById('save_button');
+
+nextButton.addEventListener('click', function(e) {
+    e.preventDefault();
+    nextButton.style.display = 'none';
+    cupConfig.style.display = 'block';
+    animateTransition();
+});
+
+document.getElementById('config_option').addEventListener('change', function() {
+    const leagueOptions = document.getElementById('league_options');
+    const knockoutOptions = document.getElementById('knockout_options');
+    const combinationsOptions = document.getElementById('combinations_options');
+
+    leagueOptions.style.display = 'none';
+    knockoutOptions.style.display = 'none';
+    combinationsOptions.style.display = 'none';
+
+    const selectedOption = this.value;
+    if (selectedOption === 'league') {
+    leagueOptions.style.display = 'block';
+    } else if (selectedOption === 'knockout') {
+    knockoutOptions.style.display = 'block';
+    } else if (selectedOption === 'combinations') {
+    combinationsOptions.style.display = 'block';
+    }
+
+    enableSaveButton();
+});
+
+function animateTransition() {
+    // Add your transition animation code here
+}
+
+function enableSaveButton() {
+    saveButton.disabled = false;
+}
+});
+</script>
