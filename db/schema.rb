@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_05_103317) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -106,8 +106,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_05_103317) do
     t.date "start_date"
     t.date "end_date"
     t.text "ranking"
-    t.boolean "away_goal", default: false
     t.integer "state", default: 0, null: false
+    t.text "win_order", null: false
     t.index ["cup_id"], name: "index_leagues_on_cup_id"
     t.index ["winner_id"], name: "index_leagues_on_winner_id"
   end

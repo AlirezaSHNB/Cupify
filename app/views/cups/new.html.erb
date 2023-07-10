@@ -10,196 +10,250 @@
     </div>
 
     <div class="form-group">
-        <%= label_tag :type, 'Type' %>
-        <%= select_tag :type, options_for_select(Cup.filed.keys.map { |type| [type.titleize, type] }), class: 'form-control' %>
+        <%= label_tag :field, 'Type' %>
+        <%= select_tag :field, options_for_select(Cup.fields.keys.map { |type| [type.titleize, type] }), class: 'form-control', id: 'cup_type' %>
     </div>
 
     <div class="form-group">
         <%= label_tag :start_date, 'Start Date' %>
-        <%= text_field_tag :start_date, '', class: 'form-control datepicker' %>
+        <%= text_field_tag :start_date, '', id: 'start-date-field', class: 'form-control datepicker' %>
     </div>
 
     <div class="form-group">
         <%= label_tag :end_date, 'End Date' %>
-        <%= text_field_tag :end_date, '', class: 'form-control datepicker' %>
+        <%= text_field_tag :end_date, '', id: 'end-date-field', class: 'form-control datepicker' %>
     </div>
 
     <div class="form-group">
-        <%= label_tag :num_players, 'Number of Players' %>
-        <%= number_field_tag :num_players, '', class: 'form-control' %>
+        <%= label_tag :number_of_players, 'Number of Players' %>
+        <%= number_field_tag :number_of_players, '', class: 'form-control' %>
     </div>
 
-    <%= button_to 'Next', '#', class: 'btn btn-primary next-button' %>
+    <div class="form-group">
+        <%= label_tag :min_number_of_participants, 'Min Number of Teams' %>
+        <%= number_field_tag :min_number_of_participants, '', class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+        <%= label_tag :max_number_of_participants, 'Max Number of Teams' %>
+        <%= number_field_tag :max_number_of_participants, '', class: 'form-control' %>
+    </div>
+
+    <div id="cup_config" class="cup-config">
+        <h2>Cup Configuration</h2>
+
+        <div class="form-group">
+            <%= label_tag :config_option, 'Configuration Option' %>
+            <%= select_tag :config_option, options_for_select(Cup.modes.keys.map { |option| [option.titleize, option] }), class: 'form-control', id: 'config_option' %>
+        </div>
+
+        <!-- Additional configuration options specific to each cup type -->
+        <div id="cup_options" class="cup-option" style="display: block;">
+            <div id="points_for_win" class="form-group" style="display: block;">
+                <%= label_tag :points_for_win_lable, 'Points for Win' %>
+                <%= number_field_tag :points_for_win_input, '', class: 'form-control' %>
+            </div>
+
+            <div id="points_for_draw" class="form-group" style="display: block;">
+                <%= label_tag :points_for_draw_lable, 'Points for Draw' %>
+                <%= number_field_tag :points_for_draw_input, '', class: 'form-control' %>
+            </div>
+
+            <div id="points_for_lost" class="form-group" style="display: block;">
+                <%= label_tag :points_for_lost_lable, 'Points for Lost' %>
+                <%= number_field_tag :points_for_lost_input, '', class: 'form-control' %>
+            </div>
+
+            <div id="round_trip" class="form-group" style="display: block;">
+                <%= label_tag :round_trip_lable, 'Round Trip' %>
+                <%= check_box_tag :round_trip_input %>
+            </div>
+
+            <div id="away_goal" class="form-group" style="display: none;">
+                <%= label_tag :away_goal_lable, 'Away Goal' %>
+                <%= check_box_tag :away_goal_input %>
+            </div>
+
+            <div id="third_place_match" class="form-group" style="display: none;">
+                <%= label_tag :third_place_match_lable, 'Third Place Match' %>
+                <%= check_box_tag :third_place_match_input %>
+            </div>
+
+            <div id="win_order" class="form-group" style="display: block;">
+                <%= label_tag :win_order_lable, 'Win Order' %>
+                <%= select_tag :win_order_input, options_for_select(League.win_factors.keys.map { |item| [item.titleize, item] }), class: 'form-control', multiple: true %>
+                <div id="win_order_buttons">
+                    <button id="move_up" class="button" disabled>&uarr;</button>
+                    <button id="move_down" class="button" disabled>&darr;</button>
+                </div>
+                <%= hidden_field_tag :selected_win_order_items, [] %>
+            </div>
+        </div>
+        <br>
+        <%= submit_tag 'Save', class: 'btn btn-primary save-button', id: 'save_button' %>
+    </div>
+
 <% end %>
 
-<!-- Cup Configuration Form -->
-<div id="cup_config" class="cup-config">
-    <h2>Cup Configuration</h2>
-
-    <div class="form-group">
-        <%= label_tag :config_option, 'Configuration Option' %>
-        <%= select_tag :config_option, options_for_select(Cup.configuration_options.keys.map { |option| [option.titleize, option] }), class: 'form-control' %>
-    </div>
-
-    <!-- Additional configuration options specific to each cup type -->
-    <div id="league_options" class="cup-option" style="display: none;">
-        <div class="form-group">
-            <%= label_tag :points_for_win, 'Points for Win' %>
-            <%= number_field_tag :points_for_win, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :points_for_draw, 'Points for Draw' %>
-            <%= number_field_tag :points_for_draw, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :points_for_lost, 'Points for Lost' %>
-            <%= number_field_tag :points_for_lost, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :round_trip, 'Round Trip' %>
-            <%= check_box_tag :round_trip %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :win_order, 'Win Order' %>
-            <%= select_tag :win_order, options_for_select(Cup.win_order_items.keys.map { |item| [item.titleize, item] }), class: 'form-control', multiple: true %>
-        </div>
-    </div>
-
-    <div id="knockout_options" class="cup-option" style="display: none;">
-        <div class="form-group">
-            <%= label_tag :third_place_match, 'Third Place Match' %>
-            <%= check_box_tag :third_place_match %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :round_trip, 'Round Trip' %>
-            <%= check_box_tag :round_trip %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :away_goal, 'Away Goal' %>
-            <%= check_box_tag :away_goal %>
-        </div>
-    </div>
-
-    <div id="combinations_options" class="cup-option" style="display: none;">
-        <div class="form-group">
-            <%= label_tag :points_for_win, 'Points for Win' %>
-            <%= number_field_tag :points_for_win, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :points_for_draw, 'Points for Draw' %>
-            <%= number_field_tag :points_for_draw, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :points_for_lost, 'Points for Lost' %>
-            <%= number_field_tag :points_for_lost, '', class: 'form-control' %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :third_place_match, 'Third Place Match' %>
-            <%= check_box_tag :third_place_match %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :round_trip, 'Round Trip' %>
-            <%= check_box_tag :round_trip %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :away_goal, 'Away Goal' %>
-            <%= check_box_tag :away_goal %>
-        </div>
-
-        <div class="form-group">
-            <%= label_tag :win_order, 'Win Order' %>
-            <%= select_tag :win_order, options_for_select(Cup.win_order_items.keys.map { |item| [item.titleize, item] }), class: 'form-control', multiple: true %>
-        </div>
-    </div>
-
-    <%= submit_tag 'Save', class: 'btn btn-primary save-button', id: 'save_button', disabled: true %>
-</div>
-
 <style>
-.cup-form {
-max-width: 400px;
-margin: 0 auto;
-padding: 20px;
-background-color: #f7f7f7;
-border: 1px solid #ccc;
-border-radius: 5px;
-}
-
-.cup-config {
-display: none;
-max-width: 400px;
-margin: 20px auto;
-padding: 20px;
-background-color: #f7f7f7;
-border: 1px solid #ccc;
-border-radius: 5px;
-}
-
-.cup-option {
-display: none;
-margin-top: 10px;
-}
-
-.next-button {
-margin-top: 20px;
-}
-
-.save-button {
-margin-top: 20px;
-}
-</style>
-
-<script>
-document.addEventListener('DOMContentLoaded', function() {
-const nextButton = document.getElementById('next_button');
-const cupConfig = document.getElementById('cup_config');
-const saveButton = document.getElementById('save_button');
-
-nextButton.addEventListener('click', function(e) {
-    e.preventDefault();
-    nextButton.style.display = 'none';
-    cupConfig.style.display = 'block';
-    animateTransition();
-});
-
-document.getElementById('config_option').addEventListener('change', function() {
-    const leagueOptions = document.getElementById('league_options');
-    const knockoutOptions = document.getElementById('knockout_options');
-    const combinationsOptions = document.getElementById('combinations_options');
-
-    leagueOptions.style.display = 'none';
-    knockoutOptions.style.display = 'none';
-    combinationsOptions.style.display = 'none';
-
-    const selectedOption = this.value;
-    if (selectedOption === 'league') {
-    leagueOptions.style.display = 'block';
-    } else if (selectedOption === 'knockout') {
-    knockoutOptions.style.display = 'block';
-    } else if (selectedOption === 'combinations') {
-    combinationsOptions.style.display = 'block';
+    .cup-form {
+        max-width: 400px;
+        margin: 0 auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
     }
 
-    enableSaveButton();
-});
+    .cup-config {
+        max-width: 400px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: #f7f7f7;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+    }
 
-function animateTransition() {
-    // Add your transition animation code here
-}
+    .cup-option {
+        display: none;
+        margin-top: 10px;
+    }
 
-function enableSaveButton() {
-    saveButton.disabled = false;
-}
-});
+    .button {
+        margin-top: 20px;
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: #45a049;
+    }
+</style>
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
+<script>
+
+    document.addEventListener('DOMContentLoaded', function() {
+        $('.datepicker').datepicker();
+
+        const roundTripCheckbox = document.getElementById('round_trip_input');
+        const awayGoalCheckbox = document.getElementById('away_goal_input');
+        awayGoalCheckbox.disabled = true;
+
+        roundTripCheckbox.addEventListener('change', function() {
+            if (this.checked) {
+                awayGoalCheckbox.disabled = false;
+            } else {
+                awayGoalCheckbox.disabled = true;
+                awayGoalCheckbox.checked = false;
+            }
+        });
+
+        const cupConfig = document.getElementById('cup_config');
+        const configOption = document.getElementById('config_option');
+        
+
+        configOption.addEventListener('change', function() {
+            const pointsForWin = document.getElementById('points_for_win');
+            const pointsForDraw = document.getElementById('points_for_draw');
+            const pointsForLost = document.getElementById('points_for_lost');
+            const roundTrip = document.getElementById('round_trip');
+            const awayGoal = document.getElementById('away_goal');
+            const thirdPlaceMatch = document.getElementById('third_place_match');
+            const winOrder = document.getElementById('win_order');
+
+            const selectedOption = this.value;
+            if (selectedOption === 'league') {
+                pointsForWin.style.display = 'block';
+                pointsForDraw.style.display = 'block';
+                pointsForLost.style.display = 'block';
+                roundTrip.style.display = 'block';
+                awayGoal.style.display = 'none';
+                thirdPlaceMatch.style.display = 'none';
+                winOrder.style.display = 'block';
+            } else if (selectedOption === 'knockout') {
+                pointsForWin.style.display = 'none';
+                pointsForDraw.style.display = 'none';
+                pointsForLost.style.display = 'none';
+                roundTrip.style.display = 'block';
+                awayGoal.style.display = 'block';
+                thirdPlaceMatch.style.display = 'block';
+                winOrder.style.display = 'none';
+            } else if (selectedOption === 'combination') {
+                pointsForWin.style.display = 'block';
+                pointsForDraw.style.display = 'block';
+                pointsForLost.style.display = 'block';
+                roundTrip.style.display = 'block';
+                awayGoal.style.display = 'block';
+                thirdPlaceMatch.style.display = 'block';
+                winOrder.style.display = 'block';
+            }
+        });
+
+        const cupType = document.getElementById('cup_type');
+        cupType.addEventListener('change', function() {
+            cupConfig.style.display = 'block';
+        });
+
+        const winOrderSelect = document.getElementById('win_order_input');
+        const moveUpButton = document.getElementById('move_up');
+        const moveDownButton = document.getElementById('move_down');
+
+        setWinOrder();
+
+        winOrderSelect.addEventListener('change', function() {
+            const selectedOptions = Array.from(this.selectedOptions);
+            const selectedIndex = this.selectedIndex;
+
+            if (selectedOptions.length > 0) {
+                moveUpButton.disabled = selectedIndex === 0;
+                moveDownButton.disabled = selectedIndex === this.options.length - 1;
+            } else {
+                moveUpButton.disabled = true;
+                moveDownButton.disabled = true;
+            }
+
+            setWinOrder();
+        });
+
+        moveUpButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const selectedIndex = winOrderSelect.selectedIndex;
+            if (selectedIndex > 0) {
+                const selectedOption = winOrderSelect.options[selectedIndex];
+                const previousOption = winOrderSelect.options[selectedIndex - 1];
+
+                winOrderSelect.insertBefore(selectedOption, previousOption);
+                winOrderSelect.selectedIndex = selectedIndex - 1;
+            }
+            setWinOrder()
+        });
+
+        moveDownButton.addEventListener('click', function(event) {
+            event.preventDefault();
+            const selectedIndex = winOrderSelect.selectedIndex;
+            if (selectedIndex < winOrderSelect.options.length - 1) {
+                const selectedOption = winOrderSelect.options[selectedIndex];
+                const nextOption = winOrderSelect.options[selectedIndex + 1];
+
+                winOrderSelect.insertBefore(nextOption, selectedOption);
+                winOrderSelect.selectedIndex = selectedIndex + 1;
+            }
+            setWinOrder()
+        });
+
+        function setWinOrder() {
+            const winOrderOptions = Array.from(winOrderSelect.options);
+            const winOrderValues = winOrderOptions.map(option => option.value);
+            document.getElementById('selected_win_order_items').value = winOrderValues;
+        }
+
+    });
 </script>

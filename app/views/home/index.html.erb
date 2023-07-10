@@ -1,44 +1,44 @@
 <style>
-/* CSS styles */
-h1 {
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 1rem;
-}
+    /* CSS styles */
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
 
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: 2rem;
-}
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
 
-th, td {
-    padding: 0.5rem;
-    border: 1px solid #ccc;
-}
+    th, td {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+    }
 
-th {
-    background-color: #f2f2f2;
-    font-weight: bold;
-}
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
 
-tr:hover {
-    background-color: #f9f9f9;
-}
+    tr:hover {
+        background-color: #f9f9f9;
+    }
 
-.button {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
-}
+    .button {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
 
-.button:hover {
-    background-color: #45a049;
-}
+    .button:hover {
+        background-color: #45a049;
+    }
 </style>
 
 <!-- Updated HTML structure with CSS classes -->
@@ -46,30 +46,30 @@ tr:hover {
 
 <h1>Cups</h1>
 <table>
-<thead>
-    <tr>
-    <th>Name</th>
-    <th>Field</th>
-    <th>State</th>
-    <th>Start Date</th>
-    <th>End Date</th>
-    <th>Winner</th>
-    <th></th>
-    </tr>
-</thead>
-<tbody>
-    <% @cups.each do |cup| %>
-    <tr>
-        <td><%= cup.name %></td>
-        <td><%= cup.field %></td>
-        <td><%= cup.state %></td>
-        <td><%= cup.start_date %></td>
-        <td><%= cup.end_date %></td>
-        <td><%= cup.winner&.name %></td>
-        <td><%= link_to 'Show', cup_path(cup), class: 'button' %></td>
-    </tr>
-    <% end %>
-</tbody>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Field</th>
+            <th>State</th>
+            <th>Start Date</th>
+            <th>End Date</th>
+            <th>Winner</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        <% @cups.each do |cup| %>
+        <tr>
+            <td><%= cup.name %></td>
+            <td><%= cup.field %></td>
+            <td><%= cup.state %></td>
+            <td><%= cup.start_date %></td>
+            <td><%= cup.end_date %></td>
+            <td><%= cup.winner&.name %></td>
+            <td><%= link_to 'Show', cup_path(cup), class: 'button' %></td>
+        </tr>
+        <% end %>
+    </tbody>
 </table>
 <%= link_to 'Show All Cups', cups_path, class: 'button' %>
 <%= link_to 'Create New Cup', "#{cups_path}/new", class: 'button' %>

@@ -1,8 +1,8 @@
-    <%# ----- add these lines here: ----- %>
+<%# ----- add these lines here: ----- %>
 
-    <h1>Sign Up</h1>
+<h1>Sign Up</h1>
 
-    <%= form_for @user do |form| %>
+<%= form_for @user do |form| %>
     <div>
         <%= form.label :username %>
         <%= form.text_field :username, id: 'username-field' %>
@@ -34,12 +34,12 @@
     <div>
         <%= form.submit "Sign up!", class: 'btn btn-primary' %>
     </div>
-    <% end %>
-    <!-- Include the necessary JavaScript libraries -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
-    <script>
+<% end %>
+<!-- Include the necessary JavaScript libraries -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/datepicker/1.0.10/datepicker.min.js"></script>
+<script>
     // Live check for username availability
     $('#username-field').on('input', function() {
         var username = $(this).val();
@@ -112,72 +112,5 @@
         live_check_password_confirmation()
     });
 
-    </script>
-    <style>
-    body {
-        font-family: Arial, sans-serif;
-    }
-
-    h1 {
-        color: #333;
-        font-size: 24px;
-        margin-bottom: 20px;
-        margin-left: 30px;
-    }
-
-    label {
-        display: block;
-        margin-bottom: 5px;
-        margin-left: 30px;
-        font-weight: bold;
-    }
-
-    input[type="text"],
-    input[type="password"],
-    select {
-        width: 50%;
-        padding: 10px;
-        font-size: 16px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-        margin-bottom: 10px;
-        margin-left: 30px;
-    }
-
-    .field {
-        margin-bottom: 15px;
-    }
-
-    .phone-number-field {
-        display: flex;
-        align-items: center;
-    }
-
-    .phone-number-field input {
-        flex: 1;
-        margin-right: 10px;
-    }
-
-    #username-status,
-    #email-status,
-    #password-confirmation-status {
-        display: block;
-        margin-top: 5px;
-        font-size: 14px;
-    }
-
-    .btn {
-        padding: 10px 20px;
-        font-size: 16px;
-        background-color: #4CAF50;
-        color: white;
-        border: none;
-        border-radius: 5px;
-        cursor: pointer;
-    }
-
-    .btn:hover {
-        background-color: #45a049;
-    }
-    </style>
-    <%# ----- end of added lines ----- %>
+</script>
+<%# ----- end of added lines ----- %>
