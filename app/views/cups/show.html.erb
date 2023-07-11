@@ -1,1 +1,291 @@
-<h1>AAAAAAAAAAAAAAAAAAAAA</h1>
+<h1>Cup Details</h1>
+
+<p><strong>Name:</strong> <%= @cup.name %></p>
+<p><strong>Start Date:</strong> <%= @cup.start_date %></p>
+<p><strong>End Date:</strong> <%= @cup.end_date %></p>
+<p><strong>Field:</strong> <%= @cup.field %></p>
+<p><strong>Number of Players:</strong> <%= @cup.number_of_players %></p>
+<p><strong>State:</strong> <%= @cup.state %></p>
+
+<% add_button_condition = (@cup.state == "setting_participants") and (@cup.participants.count < @cup.max_number_of_participants) %>
+<% generate_button_condition = (@cup.participants.count <= @cup.max_number_of_participants) and (@cup.participants.count >= @cup.min_number_of_participants) %>
+
+<% if @cup.mode == "league" %>
+    <% if @cup.participants.count.zero? %>
+        <p>No teams are registered for this cup.</p>
+    <% else %>
+        <h2>League Details</h2>
+        <% if @cup.leagues.first.ranking.empty? %>
+            <p>No ranking data available.</p>
+        <% else %>
+            <h3>Current Ranking</h3>
+            <table>
+                <!-- Table content -->
+            </table>
+        <% end %>
+        <br>
+        <table>
+            <% @cup.league.win_order.each do |win_factor| %>
+                <tr>
+                    <td><%= win_factor %></td>
+                </tr>
+            <% end %>
+        </table>
+        <% if generate_button_condition %>
+            <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
+        <% end %>
+    <% end %>
+    <% if add_button_condition %>
+        <button id="add-team-btn">Add Team</button>
+    <% end %>
+<% elsif @cup.mode == "knockout" %>
+    <% if @cup.participants.count.zero? %>
+        <p>No teams are registered for this cup.</p>
+    <% else %>
+        <h2>Knockout Details</h2>
+        <% if @cup.knockouts.first.graph_assignment.empty? %>
+            <p>No teams assigned to the knockout stage.</p>
+        <% else %>
+            <h3>Current Teams</h3>
+            <!-- Display current teams -->
+        <% end %>
+        <% if generate_button_condition %>
+            <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
+        <% end %>
+    <% end %>
+    <% if add_button_condition %>
+        <button id="add-team-btn">Add Team</button>
+    <% end %>
+<% elsif @cup.mode == "combination" %>
+    <% if @cup.participants.count.zero? %>
+        <p>No teams are registered for this cup.</p>
+    <% else %>
+        <h2>Combination Details</h2>
+        <% if @cup.leagues.empty? %>
+            <p>No league data available.</p>
+        <% else %>
+            <h3>League Details</h3>
+                <% @cup.leagues.each_with_index do |league, index| %>
+                    <h3> <%= "Group #{(index + 65).chr}"%> <h3>
+                    <table>
+                        <thead>
+                        <tr>
+                            <th>No. </th>
+                            <th> Team Name </th>
+                            <th> Win </th>
+                            <th> Draw </th>
+                            <th> Lost </th>
+                            <th> Points </th>
+                            <% if @football_base_fields.include?(@cup.field) %>
+                                <th> Goals Difference </th>
+                                <th> Goals For </th>
+                                <th> Goals Against </th>
+                                <th> Fouls </th>
+                                <th> Yellow Cards </th>
+                                <th> Red Cards </th>
+                            <% end %>
+                        </tr>
+                        </thead>
+                        <% league.ranking.each_with_index do |participant_id, rank| %>
+                            <% participant = Participant.find(participant_id) %>
+                            <% league_participant = LeagueParticipant.find_by(league: league, participant: participant)%>
+                            <tbody>
+                                <td> <%= rank + 1 %> </td>
+                                <td> <%= participant.name %> </td>
+                                <td> <%= league_participant.number_of_wins %> </td>
+                                <td> <%= league_participant.number_of_draws %> </td>
+                                <td> <%= league_participant.number_of_losts %> </td>
+                                <td> <%= league_participant.points %> </td>
+                                <% if @football_base_fields.include?(@cup.field) %>
+                                    <td> <%= league_participant.number_of_earned_scores - league_participant.number_of_lost_scores %> </td>
+                                    <td> <%= league_participant.number_of_earned_scores %> </td>
+                                    <td> <%= league_participant.number_of_lost_scores %> </td>
+                                    <td> <%= league_participant.number_of_made_fouls %> </td>
+                                    <td> <%= league_participant.number_of_yellow_cards %> </td>
+                                    <td> <%= league_participant.number_of_red_cards %> </td>
+                                <% end %>
+                            </tbody>
+                        <% end %>
+                    </table>
+                <% end %>
+                <br>
+                <h4> Win Order of Groups </h4>
+                <table>
+                    <% @cup.leagues.first.win_order.each do |win_factor| %>
+                        <tr>
+                            <td><%= League.win_factors.key(win_factor) %></td>
+                        </tr>
+                    <% end %>
+                </table>
+            <% if @cup.knockouts.empty? %>
+                <p>No knockout data available.</p>
+            <% else %>
+                <h3>Knockout Details</h3>
+                
+            <% end %>
+        <% end %>
+        <% if generate_button_condition %>
+            <%# <%= button_to 'Generate Cup', generate_cup_path(@cup), method: :post %> %>
+        <% end %>
+    <% end %>
+    <% if add_button_condition %>
+        <button id="add-team-btn">Add Team</button>
+        <%# <%= button_to 'Add Team', new_participant_path, method: :get, remote: true %> %>
+    <% end %>
+<% end %>
+
+<!-- Additional cup details -->
+
+<%= link_to 'Edit', edit_cup_path(@cup) %> |
+<%= link_to 'Back', cups_path %>
+
+<!-- Modals -->
+
+<div id="add-team-modal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <button id="close-modal-btn">Close</button>
+        <h2>Add Team</h2>
+        <h3>Team Name: <span id="team-name"></span></h3>
+        <table id="players-table">
+            <thead>
+            <tr>
+                <th>Name</th>
+                <th>Username</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Player rows will be dynamically added here -->
+            </tbody>
+        </table>
+        <br>
+        <br>
+        <div id="existing-team-section">
+            <input type="text" id="search-team" placeholder="Search team by name">
+            <ul id="existing-team-results"></ul>
+            <button id="add-existing-team-btn">Add Existing Team</button>
+        </div>
+        <div id="new-team-section">
+            <h3>Create New Team</h3>
+            <p>Enter a name for the new team:</p>
+            <input type="text" id="team-name" placeholder="Enter team name">
+            <button id="create-team-btn">Create</button>
+            <p>Add players to the team:</p>
+            <input type="text" id="search-player" placeholder="Search player by username">
+            <ul id="player-results"></ul>
+            <button id="add-player-btn">Add Player</button>
+        </div>
+        <br>
+        <button id="add-team-btn">Add Team</button>
+    </div>
+</div>
+
+<script>
+    var modal = document.getElementById("add-team-modal");
+    var addTeamBtn = document.getElementById("add-team-btn");
+    var closeModalBtn = document.getElementsByClassName("close-modal-btn");
+
+    // When the user clicks the button, open the modal
+    addTeamBtn.addEventListener("click", function() {
+        modal.style.display = "block";
+    });
+
+    // When the user clicks on the close button, close the modal
+    closeModalBtn.addEventListener("click", function() {
+        modal.style.display = "none";
+    });
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.addEventListener("click", function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    });
+
+    // Search existing teams
+    var searchTeamInput = document.getElementById("search-team");
+    var existingTeamResults = document.getElementById("existing-team-results");
+    var addExistingTeamBtn = document.getElementById("add-existing-team-btn");
+
+    searchTeamInput.addEventListener("input", function() {
+        var searchQuery = searchTeamInput.value.trim();
+        if (searchQuery.length >= 2) {
+        // Call the API endpoint in participants_controller to search for existing teams
+        // Update the existingTeamResults with the search results
+        }
+    });
+
+    addExistingTeamBtn.addEventListener("click", function() {
+        // Get the selected team from the existingTeamResults
+        // Call the API endpoint in participants_controller to add the selected team to the cup
+    });
+
+    // Create new team
+    var teamNameInput = document.getElementById("team-name");
+    var searchPlayerInput = document.getElementById("search-player");
+    var playerResults = document.getElementById("player-results");
+    var addPlayerBtn = document.getElementById("add-player-btn");
+    var createTeamBtn = document.getElementById("create-team-btn");
+
+    createTeamBtn.addEventListener("click", function() {
+        var teamName = teamNameInput.value.trim();
+        if (teamName.length > 0) {
+        // Call the API endpoint in participants_controller to create a new team with the teamName
+        }
+    });
+
+    searchPlayerInput.addEventListener("input", function() {
+        var searchQuery = searchPlayerInput.value.trim();
+        if (searchQuery.length >= 2) {
+        // Call the API endpoint in players_controller to search for players
+        // Update the playerResults with the search results
+        }
+    });
+
+    addPlayerBtn.addEventListener("click", function() {
+        // Get the selected player from the playerResults
+        // Call the API endpoint in participants_controller to add the selected player to the new team
+    });
+</script>
+
+<style>
+    /* CSS styles */
+    h1 {
+        font-size: 2rem;
+        font-weight: bold;
+        margin-bottom: 1rem;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 2rem;
+    }
+
+    th, td {
+        padding: 0.5rem;
+        border: 1px solid #ccc;
+    }
+
+    th {
+        background-color: #f2f2f2;
+        font-weight: bold;
+    }
+
+    tr:hover {
+        background-color: #f9f9f9;
+    }
+
+    .button {
+        display: inline-block;
+        padding: 0.5rem 1rem;
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 4px;
+        transition: background-color 0.3s ease;
+    }
+
+    .button:hover {
+        background-color: #45a049;
+    }
+</style>

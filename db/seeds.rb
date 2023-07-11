@@ -10,20 +10,21 @@
 # Futsal Cup
 
 futsal_league_cup = Cup.create(name: "League1", start_date: Date.today + 20, field: 0,
-    number_of_players: 7, state: 2, min_number_of_participants: 3, max_number_of_participants: 6)
+    number_of_players: 7, state: 0, min_number_of_participants: 3, max_number_of_participants: 6,
+    mode: 0)
 
 ### Create league
 
 league_for_futsal_league_cup = League.create(points_for_win: 3, points_for_draw: 1, points_for_lost: 0,
-    is_round_trip: false, away_goal: false, start_date: Date.today + 20, state: 0,
-    cup: futsal_league_cup)
+    is_round_trip: false, start_date: Date.today + 20, state: 0,
+    cup: futsal_league_cup, win_order: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9],
+    current_weak: 1)
 
 # Team Ping Pong Cup
 
 team_ping_pong_knockout_cup = Cup.create(name: "Knockout1", start_date: Date.today - 5,
-    field: 3, number_of_players: 2, state: 3,
+    field: 3, number_of_players: 2, state: 2, mode: 1,
     min_number_of_participants: 4, max_number_of_participants: 12)
-
 ### Players and Participants
 
 player_1_in_ping_pong_team_A = Player.create(first_name: "Alireza", last_name: "Sharifpour",
@@ -99,33 +100,57 @@ knockout_for_team_ping_pong_knockout_cup = Knockout.create(is_round_trip: true, 
 
 ### Cup Participants
 
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_A)
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_B)
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_C)
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_D)
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_E)
-CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_F)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_A,
+    number_of_earned_scores: 38, number_of_lost_scores: 10, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_B,
+    number_of_earned_scores: 10, number_of_lost_scores: 38, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_C,
+    number_of_earned_scores: 0, number_of_lost_scores: 0, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_D,
+    number_of_earned_scores: 10, number_of_lost_scores: 38, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_E,
+    number_of_earned_scores: 38, number_of_lost_scores: 10, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: team_ping_pong_knockout_cup, participant: ping_pong_team_F,
+    number_of_earned_scores: 0, number_of_lost_scores: 0, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
 
 ### Knockout Participants
 
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_A)
+    participant: ping_pong_team_A, number_of_earned_scores: 38, number_of_lost_scores: 10,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_B)
+    participant: ping_pong_team_B, number_of_earned_scores: 10, number_of_lost_scores: 38,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_C)
+    participant: ping_pong_team_C, number_of_earned_scores: 0, number_of_lost_scores: 0,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_D)
+    participant: ping_pong_team_D, number_of_earned_scores: 10, number_of_lost_scores: 38,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_E)
+    participant: ping_pong_team_E, number_of_earned_scores: 38, number_of_lost_scores: 10,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_team_ping_pong_knockout_cup,
-    participant: ping_pong_team_F)
+    participant: ping_pong_team_F, number_of_earned_scores: 10, number_of_lost_scores: 38,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 
 ### First match between A and B is done
 
 first_match_between_A_and_B = Match.create(start_time: DateTime.now - 5 + 3.hour,
     end_time: DateTime.now - 5 + 4.hour + 30.minute, home_team: ping_pong_team_A,
-    knockout: knockout_for_team_ping_pong_knockout_cup, winner: ping_pong_team_A, state: 2)
+    knockout: knockout_for_team_ping_pong_knockout_cup, winner: ping_pong_team_A, state: 2,)
 MatchParticipant.create(match: first_match_between_A_and_B, participant: ping_pong_team_A,
     number_of_scores: 19)
 MatchParticipant.create(match: first_match_between_A_and_B, participant: ping_pong_team_B,
@@ -434,31 +459,39 @@ PlayerParticipant.create(player: player_in_fifa23_team_H, participant: fifa23_te
 # Individual FIFA23 Cup
 
 individual_fifa23_comb_cup = Cup.create(name: "Comb1", start_date: Date.today - 50,  field: 4,
-    number_of_players: 1, state: 4, min_number_of_participants: 6,
+    number_of_players: 1, state: 3, min_number_of_participants: 6, mode: 2,
     max_number_of_participants: 16, winner: fifa23_team_F)
 
 ### Create league A (Groupe A)
 
 league_A_for_individual_fifa23_comb_cup = League.create(points_for_win: 3, points_for_draw: 1,
-    points_for_lost: 0, is_round_trip: false, away_goal: false, cup: individual_fifa23_comb_cup,
+    points_for_lost: 0, is_round_trip: false, cup: individual_fifa23_comb_cup,
     start_date: Date.today - 50, end_date: Date.today - 48, state: 2,
     ranking: [fifa23_team_A.id, fifa23_team_C.id, fifa23_team_B.id, fifa23_team_D.id],
-    winner: fifa23_team_A)
+    winner: fifa23_team_A, win_order: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], current_weak: 3)
 
 ### League Participants for league A (Groupe A)
 
 LeagueParticipant.create(league: league_A_for_individual_fifa23_comb_cup,
     participant: fifa23_team_A, number_of_wins: 2, number_of_draws: 1, number_of_losts: 0,
-    points: 7)
+    points: 7, number_of_earned_scores: 6, number_of_lost_scores: 2,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 LeagueParticipant.create(league: league_A_for_individual_fifa23_comb_cup,
     participant: fifa23_team_B, number_of_wins: 1, number_of_draws: 1, number_of_losts: 1,
-    points: 4)
+    points: 4, number_of_earned_scores: 2, number_of_lost_scores: 3,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 LeagueParticipant.create(league: league_A_for_individual_fifa23_comb_cup,
     participant: fifa23_team_C, number_of_wins: 1, number_of_draws: 2, number_of_losts: 0,
-    points: 5)
+    points: 5, number_of_earned_scores: 4, number_of_lost_scores: 1,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 LeagueParticipant.create(league: league_A_for_individual_fifa23_comb_cup,
     participant: fifa23_team_D, number_of_wins: 0, number_of_draws: 0, number_of_losts: 3,
-    points: 0)
+    points: 0, number_of_earned_scores: 2, number_of_lost_scores: 8,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 
 ### Matches for league A (Groupe A)
 
@@ -466,7 +499,7 @@ LeagueParticipant.create(league: league_A_for_individual_fifa23_comb_cup,
 
 match_between_A_and_B = Match.create(start_time: DateTime.now - 50 + 3.hour,
     end_time: DateTime.now - 50 + 5.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_A, state: 2)
+    winner: fifa23_team_A, state: 2, league_weak: 1)
 MatchParticipant.create(match: match_between_A_and_B, participant: fifa23_team_A,
     number_of_scores: 2)
 MatchParticipant.create(match: match_between_A_and_B, participant: fifa23_team_B,
@@ -485,7 +518,7 @@ Score.create(own_score: true, participant: fifa23_team_A, player: player_in_fifa
 
 match_between_C_and_D = Match.create(start_time: DateTime.now - 50 + 6.hour,
     end_time: DateTime.now - 50 + 8.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_C, state: 2)
+    winner: fifa23_team_C, state: 2, league_weak: 1)
 MatchParticipant.create(match: match_between_A_and_B, participant: fifa23_team_C,
     number_of_scores: 3)
 MatchParticipant.create(match: match_between_A_and_B, participant: fifa23_team_D,
@@ -506,7 +539,7 @@ Score.create(own_score: false, participant: fifa23_team_C, player: player_in_fif
 
 match_between_A_and_C = Match.create(start_time: DateTime.now - 49 + 3.hour,
     end_time: DateTime.now - 49 + 5.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: nil, state: 2)
+    winner: nil, state: 2, league_weak: 2)
 MatchParticipant.create(match: match_between_A_and_C, participant: fifa23_team_A,
     number_of_scores: 1)
 MatchParticipant.create(match: match_between_A_and_C, participant: fifa23_team_C,
@@ -525,7 +558,7 @@ Score.create(own_score: false, participant: fifa23_team_A, player: player_in_fif
 
 match_between_B_and_D = Match.create(start_time: DateTime.now - 49 + 6.hour,
     end_time: DateTime.now - 49 + 8.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_B, state: 2)
+    winner: fifa23_team_B, state: 2, league_weak: 2)
 MatchParticipant.create(match: match_between_B_and_D, participant: fifa23_team_B,
     number_of_scores: 2)
 MatchParticipant.create(match: match_between_B_and_D, participant: fifa23_team_D,
@@ -546,7 +579,7 @@ Score.create(own_score: false, participant: fifa23_team_D, player: player_in_fif
 
 match_between_B_and_C = Match.create(start_time: DateTime.now - 48 + 3.hour,
     end_time: DateTime.now - 48 + 5.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: nil, state: 2)
+    winner: nil, state: 2, league_weak: 3)
 MatchParticipant.create(match: match_between_B_and_C, participant: fifa23_team_B,
     number_of_scores: 0)
 MatchParticipant.create(match: match_between_B_and_C, participant: fifa23_team_C,
@@ -554,14 +587,14 @@ MatchParticipant.create(match: match_between_B_and_C, participant: fifa23_team_C
 
 ######### Round and Scores
 
-round_of_match_between_A_and_C = Round.create(number: 1, match: match_between_B_and_C,
+round_of_match_between_B_and_C = Round.create(number: 1, match: match_between_B_and_C,
     winner: nil, state: 2) # no score
 
 ###### Match between A and D is done
 
 match_between_A_and_D = Match.create(start_time: DateTime.now - 48 + 6.hour,
     end_time: DateTime.now - 48 + 8.hour, league: league_A_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_A, state: 2)
+    winner: fifa23_team_A, state: 2, league_weak: 3)
 MatchParticipant.create(match: match_between_A_and_D, participant: fifa23_team_A,
     number_of_scores: 3)
 MatchParticipant.create(match: match_between_A_and_D, participant: fifa23_team_D,
@@ -583,21 +616,33 @@ Score.create(own_score: false, participant: fifa23_team_A, player: player_in_fif
 ### Create league B (Groupe B)
 
 league_B_for_individual_fifa23_comb_cup = League.create(points_for_win: 3, points_for_draw: 1,
-    points_for_lost: 0, is_round_trip: false, away_goal: false, cup: individual_fifa23_comb_cup,
+    points_for_lost: 0, is_round_trip: false, cup: individual_fifa23_comb_cup,
     start_date: Date.today - 50, end_date: Date.today - 48, state: 2,
     ranking: [fifa23_team_F.id, fifa23_team_H.id, fifa23_team_G.id, fifa23_team_E.id],
-    winner: fifa23_team_F)
+    winner: fifa23_team_F, win_order: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9], current_weak: 3)
 
 ### League Participants for league B (Groupe B)
 
-LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup, participant: fifa23_team_E,
-    number_of_wins: 0, number_of_draws: 0, number_of_losts: 3, points: 0)
-LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup, participant: fifa23_team_F,
-    number_of_wins: 3, number_of_draws: 0, number_of_losts: 0, points: 9)
-LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup, participant: fifa23_team_G,
-    number_of_wins: 1, number_of_draws: 1, number_of_losts: 1, points: 4)
-LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup, participant: fifa23_team_H,
-    number_of_wins: 1, number_of_draws: 1, number_of_losts: 1, points: 4)
+LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup,
+    participant: fifa23_team_E, number_of_wins: 0, number_of_draws: 0, number_of_losts: 3,
+    points: 0, number_of_earned_scores: 2, number_of_lost_scores: 12,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
+LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup,
+    participant: fifa23_team_F, number_of_wins: 3, number_of_draws: 0, number_of_losts: 0,
+    points: 9, number_of_earned_scores: 13, number_of_lost_scores: 1,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
+LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup,\
+    participant: fifa23_team_G, number_of_wins: 1, number_of_draws: 1, number_of_losts: 1,
+    points: 4, number_of_earned_scores: 1, number_of_lost_scores: 3,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
+LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup,
+    participant: fifa23_team_H, number_of_wins: 1, number_of_draws: 1, number_of_losts: 1,
+    points: 4, number_of_earned_scores: 6, number_of_lost_scores: 6,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 
 ### Matches for league A (Groupe A)
 
@@ -605,7 +650,7 @@ LeagueParticipant.create(league: league_B_for_individual_fifa23_comb_cup, partic
 
 match_between_E_and_F = Match.create(start_time: DateTime.now - 50 + 3.hour,
     end_time: DateTime.now - 50 + 5.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_F, state: 2)
+    winner: fifa23_team_F, state: 2, league_weak: 1)
 MatchParticipant.create(match: match_between_E_and_F, participant: fifa23_team_E,
     number_of_scores: 0)
 MatchParticipant.create(match: match_between_E_and_F, participant: fifa23_team_F,
@@ -632,7 +677,7 @@ Score.create(own_score: false, participant: fifa23_team_F, player: player_in_fif
 
 match_between_G_and_H = Match.create(start_time: DateTime.now - 50 + 6.hour,
     end_time: DateTime.now - 50 + 8.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: nil, state: 2)
+    winner: nil, state: 2, league_weak: 1)
 MatchParticipant.create(match: match_between_G_and_H, participant: fifa23_team_G,
     number_of_scores: 0)
 MatchParticipant.create(match: match_between_G_and_H, participant: fifa23_team_H,
@@ -647,7 +692,7 @@ round_of_match_between_G_and_H = Round.create(number: 1, match: match_between_G_
 
 match_between_E_and_G = Match.create(start_time: DateTime.now - 49 + 3.hour,
     end_time: DateTime.now - 49 + 5.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_G, state: 2)
+    winner: fifa23_team_G, state: 2, league_weak: 2)
 MatchParticipant.create(match: match_between_E_and_G, participant: fifa23_team_E,
     number_of_scores: 0)
 MatchParticipant.create(match: match_between_E_and_G, participant: fifa23_team_G,
@@ -664,7 +709,7 @@ Score.create(own_score: false, participant: fifa23_team_G, player: player_in_fif
 
 match_between_F_and_H = Match.create(start_time: DateTime.now - 49 + 6.hour,
     end_time: DateTime.now - 49 + 8.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_F, state: 2)
+    winner: fifa23_team_G, state: 2, league_weak: 1)
 MatchParticipant.create(match: match_between_F_and_H, participant: fifa23_team_F,
     number_of_scores: 4)
 MatchParticipant.create(match: match_between_F_and_H, participant: fifa23_team_H,
@@ -689,7 +734,7 @@ Score.create(own_score: true, participant: fifa23_team_F, player: player_in_fifa
 
 match_between_F_and_G = Match.create(start_time: DateTime.now - 48 + 3.hour,
     end_time: DateTime.now - 48 + 5.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_F, state: 2)
+    winner: fifa23_team_F, state: 2, league_weak: 3)
 MatchParticipant.create(match: match_between_F_and_G, participant: fifa23_team_F,
     number_of_scores: 3)
 MatchParticipant.create(match: match_between_F_and_G, participant: fifa23_team_G,
@@ -710,7 +755,7 @@ Score.create(own_score: false, participant: fifa23_team_F, player: player_in_fif
 
 match_between_E_and_H = Match.create(start_time: DateTime.now - 48 + 6.hour,
     end_time: DateTime.now - 48 + 8.hour, league: league_B_for_individual_fifa23_comb_cup,
-    winner: fifa23_team_H, state: 2)
+    winner: fifa23_team_H, state: 2, league_weak: 3)
 MatchParticipant.create(match: match_between_E_and_H, participant: fifa23_team_E,
     number_of_scores: 2)
 MatchParticipant.create(match: match_between_E_and_H, participant: fifa23_team_H,
@@ -737,14 +782,30 @@ Score.create(own_score: false, participant: fifa23_team_H, player: player_in_fif
 
 ### Cup Participants
 
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_A)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_B)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_C)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_D)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_E)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_F)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_G)
-CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_H)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_A,
+    number_of_earned_scores: 9, number_of_lost_scores: 6, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_B,
+    number_of_earned_scores: 2, number_of_lost_scores: 3, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_C,
+    number_of_earned_scores: 6, number_of_lost_scores: 3, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_D,
+    number_of_earned_scores: 2, number_of_lost_scores: 8, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_E,
+    number_of_earned_scores: 2, number_of_lost_scores: 12, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_F,
+    number_of_earned_scores: 18, number_of_lost_scores: 3, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_G,
+    number_of_earned_scores: 1, number_of_lost_scores: 3, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
+CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_H,
+    number_of_earned_scores: 7, number_of_lost_scores: 9, number_of_opponents_fouls: 0,
+    number_of_made_fouls: 0, number_of_yellow_cards: 0, number_of_red_cards: 0)
 
 ### Create knockout
 
@@ -761,13 +822,21 @@ knockout_for_individual_fifa23_comb_cup = Knockout.create(is_round_trip: true, a
 ### Knockout Participants
 
 KnockoutParticipant.create(knockout: knockout_for_individual_fifa23_comb_cup,
-    participant: fifa23_team_A)
+    participant: fifa23_team_A, number_of_earned_scores: 3, number_of_lost_scores: 4,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_individual_fifa23_comb_cup,
-    participant: fifa23_team_H)
+    participant: fifa23_team_H, number_of_earned_scores: 1, number_of_lost_scores: 3,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_individual_fifa23_comb_cup,
-    participant: fifa23_team_F)
+    participant: fifa23_team_F, number_of_earned_scores: 5, number_of_lost_scores: 2,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 KnockoutParticipant.create(knockout: knockout_for_individual_fifa23_comb_cup,
-    participant: fifa23_team_C)
+    participant: fifa23_team_C, number_of_earned_scores: 2, number_of_lost_scores: 2,
+    number_of_opponents_fouls: 0, number_of_made_fouls: 0, number_of_yellow_cards: 0,
+    number_of_red_cards: 0)
 
 ### Matches for knockout
 

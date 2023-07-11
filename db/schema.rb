@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_11_101914) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -22,6 +22,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.bigint "participant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_earned_scores", default: 0
+    t.integer "number_of_lost_scores", default: 0
+    t.integer "number_of_opponents_fouls", default: 0
+    t.integer "number_of_made_fouls", default: 0
+    t.integer "number_of_yellow_cards", default: 0
+    t.integer "number_of_red_cards", default: 0
     t.index ["cup_id"], name: "index_cup_participants_on_cup_id"
     t.index ["participant_id"], name: "index_cup_participants_on_participant_id"
   end
@@ -38,6 +44,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.integer "state", default: 0, null: false
     t.integer "min_number_of_participants", default: 3
     t.integer "max_number_of_participants", default: 20
+    t.integer "mode", default: 0
     t.index ["winner_id"], name: "index_cups_on_winner_id"
   end
 
@@ -60,6 +67,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.bigint "participant_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "number_of_earned_scores", default: 0
+    t.integer "number_of_lost_scores", default: 0
+    t.integer "number_of_opponents_fouls", default: 0
+    t.integer "number_of_made_fouls", default: 0
+    t.integer "number_of_yellow_cards", default: 0
+    t.integer "number_of_red_cards", default: 0
     t.index ["knockout_id"], name: "index_knockout_participants_on_knockout_id"
     t.index ["participant_id"], name: "index_knockout_participants_on_participant_id"
   end
@@ -90,6 +103,12 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.integer "number_of_draws", default: 0, null: false
     t.integer "number_of_losts", default: 0, null: false
     t.integer "points", default: 0, null: false
+    t.integer "number_of_earned_scores", default: 0
+    t.integer "number_of_lost_scores", default: 0
+    t.integer "number_of_opponents_fouls", default: 0
+    t.integer "number_of_made_fouls", default: 0
+    t.integer "number_of_yellow_cards", default: 0
+    t.integer "number_of_red_cards", default: 0
     t.index ["league_id"], name: "index_league_participants_on_league_id"
     t.index ["participant_id"], name: "index_league_participants_on_participant_id"
   end
@@ -108,6 +127,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.text "ranking"
     t.integer "state", default: 0, null: false
     t.text "win_order", null: false
+    t.integer "current_weak"
     t.index ["cup_id"], name: "index_leagues_on_cup_id"
     t.index ["winner_id"], name: "index_leagues_on_winner_id"
   end
@@ -132,6 +152,7 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_10_124222) do
     t.bigint "knockout_id"
     t.bigint "winner_id"
     t.integer "state", default: 0, null: false
+    t.integer "league_weak"
     t.index ["home_team_id"], name: "index_matches_on_home_team_id"
     t.index ["knockout_id"], name: "index_matches_on_knockout_id"
     t.index ["league_id"], name: "index_matches_on_league_id"

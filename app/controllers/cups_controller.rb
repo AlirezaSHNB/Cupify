@@ -11,6 +11,7 @@ class CupsController < ApplicationController
 
     def show
         @cup = Cup.find(params[:id])
+        @football_base_fields = ["futsal", "football", "individual_fifa23", "team_fifa23", "individual_pes23", "team_pes23"]
     end
 
     def new
@@ -24,7 +25,8 @@ class CupsController < ApplicationController
             field: Cup.fields[params[:field]],
             number_of_players: params[:number_of_players].to_i, state: 0,
             min_number_of_participants: params[:min_number_of_participants].to_i,
-            max_number_of_participants: params[:max_number_of_participants].to_i)
+            max_number_of_participants: params[:max_number_of_participants].to_i,
+            mode: Cup.mode[params[:type]])
         result = @cup.save
 
         if result
