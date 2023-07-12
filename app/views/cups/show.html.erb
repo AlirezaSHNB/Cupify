@@ -121,7 +121,63 @@
                 <p>No knockout data available.</p>
             <% else %>
                 <h3>Knockout Details</h3>
-                
+                <div class="bracket">
+                    <div class="round">
+                        <div class="match">
+                            <div class="participant"><%= "@participants[0]" %></div>
+                            <div class="participant"><%= "@participants[1]" %></div>
+                            <div class="spacer"></div>
+                            <div class="participant">Winner Match 1</div>
+                        </div>
+                        <div class="match">
+                            <div class="participant"><%= "@participants[5]" %></div>
+                            <div class="participant"><%= "@participants[4]" %></div>
+                            <div class="spacer"></div>
+                            <div class="participant">Winner Match 2</div>
+                        </div>
+                    </div>
+                    <div class="round">
+                        <div class="match">
+                            <div class="participant"><%= "@participants[2]" %></div>
+                            <div class="participant"><%= "@participants[3]" %></div>
+                            <div class="participant">Winner Match 3</div>
+                            <div class="spacer"></div>
+                        </div>
+                        <div class="match">
+                            <div class="participant"><%= "@participants[6]" %></div>
+                            <div class="participant"><%= "@participants[7]" %></div>
+                            <div class="participant">Winner Match 4</div>
+                            <div class="spacer"></div>
+                        </div>
+                    </div>
+                    <div class="round">
+                        <div class="match">
+                            <div class="participant">Winner Match 1</div>
+                            <div class="participant">Winner Match 2</div>
+                            <div class="spacer"></div>
+                            <div class="participant">Winner Match 5</div>
+                        </div>
+                        <div class="match">
+                            <div class="participant">Winner Match 3</div>
+                            <div class="participant">Winner Match 4</div>
+                            <div class="spacer"></div>
+                            <div class="participant">Winner Match 6</div>
+                        </div>
+                    </div>
+                    <div class="round">
+                        <div class="match">
+                            <div class="participant">Winner Match 5</div>
+                            <div class="spacer"></div>
+                            <div class="participant">Winner Match 7</div>
+                        </div>
+                    </div>
+                    <div class="round">
+                        <div class="match">
+                            <div class="participant">Winner Match 8</div>
+                            <div class="spacer"></div>
+                        </div>
+                    </div>
+                </div>
             <% end %>
         <% end %>
         <% if generate_button_condition %>
@@ -136,7 +192,7 @@
 
 <!-- Additional cup details -->
 
-<%= link_to 'Edit', edit_cup_path(@cup) %> |
+<%= link_to 'Edit', edit_cup_path(@cup) %>
 <%= link_to 'Back', cups_path %>
 
 <!-- Modals -->
@@ -287,5 +343,41 @@
 
     .button:hover {
         background-color: #45a049;
+    }
+
+    body {
+        background-color: #f9f9f9;
+        font-family: Arial, sans-serif;
+    }
+
+    .bracket {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Arial, sans-serif;
+    }
+
+    .round {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
+
+    .match {
+        display: flex;
+        align-items: center;
+        margin-right: 30px;
+    }
+
+    .participant {
+        border: 1px solid #000;
+        padding: 10px;
+        margin: 0 10px;
+    }
+
+    .spacer {
+        width: 100px;
+        height: 20px;
     }
 </style>
