@@ -12,7 +12,8 @@ class CupsController < ApplicationController
     def show
         @cup = Cup.find(params[:id])
         @football_base_fields = ["futsal", "football", "individual_fifa23", "team_fifa23", "individual_pes23", "team_pes23"]
-        @matches = @cup.knockouts[0].generate_matches unless @cup.knockouts.empty?
+        @knockout = @cup.knockouts[0]
+        # @matches = @cup.knockouts[0].generate_matches unless @cup.knockouts.empty? 
     end
 
     def new

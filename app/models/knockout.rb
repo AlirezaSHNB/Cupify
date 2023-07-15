@@ -1,6 +1,8 @@
 class Knockout < ApplicationRecord
     serialize :graph, Hash
     serialize :graph_assignment, Hash
+    serialize :matches_hash, Hash
+    serialize :winners_hash, Hash
 
     has_many :knockout_participant, dependent: :destroy
     has_many :participants, through: :knockout_participant

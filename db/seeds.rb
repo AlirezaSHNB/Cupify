@@ -96,7 +96,16 @@ knockout_for_team_ping_pong_knockout_cup = Knockout.create(is_round_trip: true, 
         2 => ping_pong_team_C.id, 3 => ping_pong_team_D.id,
         4 => ping_pong_team_E.id, 5 => ping_pong_team_F.id,
         6 => ping_pong_team_A.id, 7 => ping_pong_team_E.id,
-        8 => nil, 9 => nil, 10 => nil})
+        8 => nil, 9 => nil, 10 => nil},
+    number_of_rows: 11, number_of_columns: 7,
+    matches_hash: {2=>{2=>[1,3], 5=>[5], 8=>[7,9], 11=>[11]},
+        4=>{4=>[2,5], 10=>[8,11]},
+        6=>{6=>[4,10]}},
+    winners_hash: {1=>{1=>ping_pong_team_A.id, 3=>ping_pong_team_B.id,
+        5=>ping_pong_team_C.id, 7=>ping_pong_team_D.id, 9=>ping_pong_team_E.id,
+        11=>ping_pong_team_F.id},
+        3=>{2=>ping_pong_team_A.id, 5=>ping_pong_team_C.id, 8=>ping_pong_team_E.id,
+        11=>ping_pong_team_F.id}})
 
 ### Cup Participants
 
@@ -817,6 +826,12 @@ knockout_for_individual_fifa23_comb_cup = Knockout.create(is_round_trip: true, a
         2 => fifa23_team_F.id, 3 => fifa23_team_C.id,
         4 => fifa23_team_A.id, 5 => fifa23_team_F.id,
         6 => fifa23_team_F.id},
+    number_of_rows: 7, number_of_columns: 5,
+    matches_hash: {2=>{2=>[1,3], 6=>[5,7]}, 4=>{4=>[2,6]}},
+    winners_hash: {1=>{1=>fifa23_team_A.id, 3=>fifa23_team_H.id,
+        5=>fifa23_team_F.id, 7=>fifa23_team_C.id},
+        3=>{2=>fifa23_team_A.id, 6=>fifa23_team_F.id},
+        5=>{4=>fifa23_team_F.id}},
     winner: fifa23_team_F)
 
 ### Knockout Participants

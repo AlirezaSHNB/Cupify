@@ -122,61 +122,37 @@
             <% else %>
                 <h3>Knockout Details</h3>
                 <div class="bracket">
-                    <div class="round">
-                        <div class="match">
-                            <div class="participant"><%= "@participants[0]" %></div>
-                            <div class="participant"><%= "@participants[1]" %></div>
-                            <div class="spacer"></div>
-                            <div class="participant">Winner Match 1</div>
-                        </div>
-                        <div class="match">
-                            <div class="participant"><%= "@participants[5]" %></div>
-                            <div class="participant"><%= "@participants[4]" %></div>
-                            <div class="spacer"></div>
-                            <div class="participant">Winner Match 2</div>
-                        </div>
-                    </div>
-                    <div class="round">
-                        <div class="match">
-                            <div class="participant"><%= "@participants[2]" %></div>
-                            <div class="participant"><%= "@participants[3]" %></div>
-                            <div class="participant">Winner Match 3</div>
-                            <div class="spacer"></div>
-                        </div>
-                        <div class="match">
-                            <div class="participant"><%= "@participants[6]" %></div>
-                            <div class="participant"><%= "@participants[7]" %></div>
-                            <div class="participant">Winner Match 4</div>
-                            <div class="spacer"></div>
-                        </div>
-                    </div>
-                    <div class="round">
-                        <div class="match">
-                            <div class="participant">Winner Match 1</div>
-                            <div class="participant">Winner Match 2</div>
-                            <div class="spacer"></div>
-                            <div class="participant">Winner Match 5</div>
-                        </div>
-                        <div class="match">
-                            <div class="participant">Winner Match 3</div>
-                            <div class="participant">Winner Match 4</div>
-                            <div class="spacer"></div>
-                            <div class="participant">Winner Match 6</div>
-                        </div>
-                    </div>
-                    <div class="round">
-                        <div class="match">
-                            <div class="participant">Winner Match 5</div>
-                            <div class="spacer"></div>
-                            <div class="participant">Winner Match 7</div>
-                        </div>
-                    </div>
-                    <div class="round">
-                        <div class="match">
-                            <div class="participant">Winner Match 8</div>
-                            <div class="spacer"></div>
-                        </div>
-                    </div>
+                    <% for row_number in 1..@knockout.number_of_rows %>
+                        <% if row_number.odd? %>
+                            <div class="round">
+                                <div class="match">
+                                    <% winners_hash = @knockout.winners_hash[row_number]%>
+                                    <% for column_number in 1..@knockout.number_of_columns %>
+                                        <% winner = winners_hash[column_number] %>
+                                        <% if winner.nil? %>
+                                            <div class="spacer"></div>
+                                        <% else %>
+                                            <div class="participant"><%= Participant.find(winner).name %></div>
+                                        <% end %>
+                                    <% end %>
+                                </div>
+                            </div>
+                        <% else %>
+                            <div class="round">
+                                <div class="match">
+                                    <% matches_hash = @knockout.matches_hash[row_number]%>
+                                    <% for column_number in 1..@knockout.number_of_columns %>
+                                        <% match_participants = matches_hash[column_number] %>
+                                        <% if match_participants.nil? %>
+                                            <div class="spacer"></div>
+                                        <% else %>
+                                            <div class="participant"><%= "col_#{match_participants[0]} vs col_#{match_participants[1]}" %></div>
+                                        <% end %>
+                                    <% end %>
+                                </div>
+                            </div>
+                        <% end %>
+                    <% end %>
                 </div>
             <% end %>
         <% end %>
