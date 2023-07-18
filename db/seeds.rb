@@ -105,7 +105,9 @@ knockout_for_team_ping_pong_knockout_cup = Knockout.create(is_round_trip: true, 
         5=>ping_pong_team_C.id, 7=>ping_pong_team_D.id, 9=>ping_pong_team_E.id,
         11=>ping_pong_team_F.id},
         3=>{2=>ping_pong_team_A.id, 5=>ping_pong_team_C.id, 8=>ping_pong_team_E.id,
-        11=>ping_pong_team_F.id}})
+        11=>ping_pong_team_F.id},
+        5=>{4=>-1, 10=>-1},
+        7=>{6=>-1}})
 
 ### Cup Participants
 
@@ -414,6 +416,37 @@ second_match_between_E_and_F = Match.create(start_time: DateTime.now + 1 + 6.hou
     home_team: ping_pong_team_F, knockout: knockout_for_team_ping_pong_knockout_cup, state: 0)
 MatchParticipant.create(match: second_match_between_E_and_F, participant: ping_pong_team_E)
 MatchParticipant.create(match: second_match_between_E_and_F, participant: ping_pong_team_F)
+
+### Knockout Node
+
+winner_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 0, number: 0, parent_node: nil)
+
+final_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 1, number: 0, parent_node: winner_node)
+
+semi_final_1_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 2, number: 0, parent_node: final_node)
+KnockoutNodeMatch.create(knockout_node: semi_final_1_node, match: first_match_between_A_and_C)
+KnockoutNodeMatch.create(knockout_node: semi_final_1_node, match: second_match_between_A_and_C)
+semi_final_2_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 2, number: 1, parent_node: final_node)
+KnockoutNodeMatch.create(knockout_node: semi_final_2_node, match: first_match_between_E_and_F)
+KnockoutNodeMatch.create(knockout_node: semi_final_2_node, match: second_match_between_E_and_F)
+
+quarter_final_1_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 3, number: 0, parent_node: semi_final_1_node, winner: ping_pong_team_A)
+KnockoutNodeMatch.create(knockout_node: quarter_final_1_node, match: first_match_between_A_and_B)
+KnockoutNodeMatch.create(knockout_node: quarter_final_1_node, match: second_match_between_A_and_B)
+quarter_final_2_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 3, number: 1, parent_node: semi_final_1_node, winner: ping_pong_team_C)
+
+quarter_final_3_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 3, number: 2, parent_node: semi_final_2_node, winner: ping_pong_team_E)
+KnockoutNodeMatch.create(knockout_node: quarter_final_3_node, match: first_match_between_D_and_E)
+KnockoutNodeMatch.create(knockout_node: quarter_final_3_node, match: second_match_between_D_and_E)
+quarter_final_4_node = KnockoutNode.create(knockout: knockout_for_team_ping_pong_knockout_cup,
+    level: 3, number: 3, parent_node: semi_final_2_node, winner: ping_pong_team_F)
 
 ### Players and Participants
 
@@ -937,3 +970,25 @@ Score.create(own_score: false, participant: fifa23_team_F, player: player_in_fif
 Score.create(own_score: false, participant: fifa23_team_F, player: player_in_fifa23_team_F,
     round: round_of_match_between_A_and_F_in_final)
 
+### Knockout Node
+
+winner_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 0, number: 0, parent_node: nil)
+third_place_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 0, number: 1, parent_node: nil)
+
+final_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 1, number: 0, parent_node: winner_node, winner: fifa23_team_F)
+KnockoutNodeMatch.create(knockout_node: final_node, match: match_between_A_and_F_in_final)
+
+third_place_match_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 1, number: 1, parent_node: third_place_node, winner: fifa23_team_C)
+KnockoutNodeMatch.create(knockout_node: third_place_match_node,
+    match: match_between_H_and_C_in_third_place_match)
+
+semi_final_1_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 2, number: 0, parent_node: final_node, winner: fifa23_team_A)
+KnockoutNodeMatch.create(knockout_node: semi_final_1_node, match: match_between_A_and_H_in_semi_final)
+semi_final_2_node = KnockoutNode.create(knockout: knockout_for_individual_fifa23_comb_cup,
+    level: 2, number: 1, parent_node: final_node, winner: fifa23_team_F)
+KnockoutNodeMatch.create(knockout_node: semi_final_2_node, match: match_between_F_and_C_in_semi_final)
