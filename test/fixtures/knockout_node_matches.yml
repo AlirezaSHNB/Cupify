@@ -1,0 +1,9 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  knockout_node: one
+  match: one
+
+two:
+  knockout_node: two
+  match: two

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_15_071247) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_135508) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -60,6 +60,28 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_15_071247) do
     t.index ["participant_id"], name: "index_fouls_on_participant_id"
     t.index ["player_id"], name: "index_fouls_on_player_id"
     t.index ["round_id"], name: "index_fouls_on_round_id"
+  end
+
+  create_table "knockout_node_matches", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.bigint "knockout_node_id", null: false
+    t.bigint "match_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["knockout_node_id"], name: "index_knockout_node_matches_on_knockout_node_id"
+    t.index ["match_id"], name: "index_knockout_node_matches_on_match_id"
+  end
+
+  create_table "knockout_nodes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
+    t.integer "level"
+    t.integer "number"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.bigint "parent_node_id"
+    t.bigint "winner_id"
+    t.bigint "knockout_id", null: false
+    t.index ["knockout_id"], name: "index_knockout_nodes_on_knockout_id"
+    t.index ["parent_node_id"], name: "index_knockout_nodes_on_parent_node_id"
+    t.index ["winner_id"], name: "index_knockout_nodes_on_winner_id"
   end
 
   create_table "knockout_participants", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
@@ -245,6 +267,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_15_071247) do
   add_foreign_key "fouls", "participants"
   add_foreign_key "fouls", "players"
   add_foreign_key "fouls", "rounds"
+  add_foreign_key "knockout_node_matches", "knockout_nodes"
+  add_foreign_key "knockout_node_matches", "matches"
+  add_foreign_key "knockout_nodes", "knockout_nodes", column: "parent_node_id"
+  add_foreign_key "knockout_nodes", "knockouts"
+  add_foreign_key "knockout_nodes", "participants", column: "winner_id"
   add_foreign_key "knockout_participants", "knockouts"
   add_foreign_key "knockout_participants", "participants"
   add_foreign_key "knockouts", "cups"

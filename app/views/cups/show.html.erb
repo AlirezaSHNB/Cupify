@@ -1,126 +1,53 @@
-<h1>Cup Details</h1>
-
-<p><strong>Name:</strong> <%= @cup.name %></p>
-<p><strong>Start Date:</strong> <%= @cup.start_date %></p>
-<p><strong>End Date:</strong> <%= @cup.end_date %></p>
-<p><strong>Field:</strong> <%= @cup.field %></p>
-<p><strong>Number of Players:</strong> <%= @cup.number_of_players %></p>
-<p><strong>State:</strong> <%= @cup.state %></p>
-
-<% add_button_condition = (@cup.state == "setting_participants") and (@cup.participants.count < @cup.max_number_of_participants) %>
-<% generate_button_condition = (@cup.participants.count <= @cup.max_number_of_participants) and (@cup.participants.count >= @cup.min_number_of_participants) %>
-
-<% if @cup.mode == "league" %>
-    <% if @cup.participants.count.zero? %>
-        <p>No teams are registered for this cup.</p>
-    <% else %>
-        <h2>League Details</h2>
-        <% if @cup.leagues.first.ranking.empty? %>
-            <p>No ranking data available.</p>
+<div class="page-container">
+    <h1>Cup Details</h1>
+    
+    <div class="cup-content">
+        <p><strong>Name:</strong> <%= @cup.name %></p>
+        <p><strong>Start Date:</strong> <%= @cup.start_date %></p>
+        <p><strong>End Date:</strong> <%= @cup.end_date %></p>
+        <p><strong>Field:</strong> <%= @cup.field %></p>
+        <p><strong>Number of Players:</strong> <%= @cup.number_of_players %></p>
+        <p><strong>State:</strong> <%= @cup.state %></p>
+    </div>
+    <% add_button_condition = (@cup.state == "setting_participants") and (@cup.participants.count < @cup.max_number_of_participants) %>
+    <% generate_button_condition = (@cup.participants.count <= @cup.max_number_of_participants) and (@cup.participants.count >= @cup.min_number_of_participants) %>
+    
+    <% if @cup.mode == "league" %>
+        <% if @cup.participants.count.zero? %>
+            <p>No teams are registered for this cup.</p>
         <% else %>
-            <h3>Current Ranking</h3>
-            <table>
-                <!-- Table content -->
-            </table>
-        <% end %>
-        <br>
-        <table>
-            <% @cup.league.win_order.each do |win_factor| %>
-                <tr>
-                    <td><%= win_factor %></td>
-                </tr>
-            <% end %>
-        </table>
-        <% if generate_button_condition %>
-            <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
-        <% end %>
-    <% end %>
-    <% if add_button_condition %>
-        <button id="add-team-btn">Add Team</button>
-    <% end %>
-<% elsif @cup.mode == "knockout" %>
-    <% if @cup.participants.count.zero? %>
-        <p>No teams are registered for this cup.</p>
-    <% else %>
-        <h2>Knockout Details</h2>
-        <% if @cup.knockouts.first.graph_assignment.empty? %>
-            <p>No teams assigned to the knockout stage.</p>
-        <% else %>
-            <h3>Current Teams</h3>
-            <!-- Display current teams -->
-        <% end %>
-        <% if generate_button_condition %>
-            <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
-        <% end %>
-    <% end %>
-    <% if add_button_condition %>
-        <button id="add-team-btn">Add Team</button>
-    <% end %>
-<% elsif @cup.mode == "combination" %>
-    <% if @cup.participants.count.zero? %>
-        <p>No teams are registered for this cup.</p>
-    <% else %>
-        <h2>Combination Details</h2>
-        <% if @cup.leagues.empty? %>
-            <p>No league data available.</p>
-        <% else %>
-            <h3>League Details</h3>
-                <% @cup.leagues.each_with_index do |league, index| %>
-                    <h3> <%= "Group #{(index + 65).chr}"%> <h3>
-                    <table>
-                        <thead>
-                        <tr>
-                            <th>No. </th>
-                            <th> Team Name </th>
-                            <th> Win </th>
-                            <th> Draw </th>
-                            <th> Lost </th>
-                            <th> Points </th>
-                            <% if @football_base_fields.include?(@cup.field) %>
-                                <th> Goals Difference </th>
-                                <th> Goals For </th>
-                                <th> Goals Against </th>
-                                <th> Fouls </th>
-                                <th> Yellow Cards </th>
-                                <th> Red Cards </th>
-                            <% end %>
-                        </tr>
-                        </thead>
-                        <% league.ranking.each_with_index do |participant_id, rank| %>
-                            <% participant = Participant.find(participant_id) %>
-                            <% league_participant = LeagueParticipant.find_by(league: league, participant: participant)%>
-                            <tbody>
-                                <td> <%= rank + 1 %> </td>
-                                <td> <%= participant.name %> </td>
-                                <td> <%= league_participant.number_of_wins %> </td>
-                                <td> <%= league_participant.number_of_draws %> </td>
-                                <td> <%= league_participant.number_of_losts %> </td>
-                                <td> <%= league_participant.points %> </td>
-                                <% if @football_base_fields.include?(@cup.field) %>
-                                    <td> <%= league_participant.number_of_earned_scores - league_participant.number_of_lost_scores %> </td>
-                                    <td> <%= league_participant.number_of_earned_scores %> </td>
-                                    <td> <%= league_participant.number_of_lost_scores %> </td>
-                                    <td> <%= league_participant.number_of_made_fouls %> </td>
-                                    <td> <%= league_participant.number_of_yellow_cards %> </td>
-                                    <td> <%= league_participant.number_of_red_cards %> </td>
-                                <% end %>
-                            </tbody>
-                        <% end %>
-                    </table>
-                <% end %>
-                <br>
-                <h4> Win Order of Groups </h4>
-                <table>
-                    <% @cup.leagues.first.win_order.each do |win_factor| %>
-                        <tr>
-                            <td><%= League.win_factors.key(win_factor) %></td>
-                        </tr>
-                    <% end %>
-                </table>
-            <% if @cup.knockouts.empty? %>
-                <p>No knockout data available.</p>
+            <h2>League Details</h2>
+            <% if @cup.leagues.first.ranking.empty? %>
+                <p>No ranking data available.</p>
             <% else %>
-                <h3>Knockout Details</h3>
+                <h3>Current Ranking</h3>
+                <table>
+                    <!-- Table content -->
+                </table>
+            <% end %>
+            <br>
+            <table>
+                <% @cup.league.win_order.each do |win_factor| %>
+                    <tr>
+                        <td><%= win_factor %></td>
+                    </tr>
+                <% end %>
+            </table>
+            <% if generate_button_condition %>
+                <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
+            <% end %>
+        <% end %>
+        <% if add_button_condition %>
+            <button id="add-team-btn">Add Team</button>
+        <% end %>
+    <% elsif @cup.mode == "knockout" %>
+        <% if @cup.participants.count.zero? %>
+            <p>No teams are registered for this cup.</p>
+        <% else %>
+            <h2>Knockout Details</h2>
+            <% if @cup.knockouts.first.graph_assignment.empty? %>
+                <p>No teams assigned to the knockout stage.</p>
+            <% else %>
                 <div class="bracket">
                     <% for row_number in 1..@knockout.number_of_rows %>
                         <% if row_number.odd? %>
@@ -128,9 +55,14 @@
                                 <div class="match">
                                     <% winners_hash = @knockout.winners_hash[row_number]%>
                                     <% for column_number in 1..@knockout.number_of_columns %>
+                                        <% if winners_hash.nil? %>
+                                            <% byebug %>
+                                        <% end %>
                                         <% winner = winners_hash[column_number] %>
                                         <% if winner.nil? %>
                                             <div class="spacer"></div>
+                                        <% elsif winner == -1 %>
+                                            <div class="participant"> </div>
                                         <% else %>
                                             <div class="participant"><%= Participant.find(winner).name %></div>
                                         <% end %>
@@ -154,67 +86,145 @@
                         <% end %>
                     <% end %>
                 </div>
+                <!-- Display current teams -->
+            <% end %>
+            <% if generate_button_condition %>
+                <%# <%= button_to 'Generate Graph', generate_graph_path(@cup), method: :post %> %>
             <% end %>
         <% end %>
-        <% if generate_button_condition %>
-            <%# <%= button_to 'Generate Cup', generate_cup_path(@cup), method: :post %> %>
+        <% if add_button_condition %>
+            <button id="add-team-btn">Add Team</button>
+        <% end %>
+    <% elsif @cup.mode == "combination" %>
+        <% if @cup.participants.count.zero? %>
+            <p>No teams are registered for this cup.</p>
+        <% else %>
+            <h2>Combination Details</h2>
+            <% if @cup.leagues.empty? %>
+                <p>No league data available.</p>
+            <% else %>
+                <h3>League Details</h3>
+                    <% @cup.leagues.each_with_index do |league, index| %>
+                        <h3> <%= "Group #{(index + 65).chr}"%> <h3>
+                        <table>
+                            <thead>
+                            <tr>
+                                <th>No. </th>
+                                <th> Team Name </th>
+                                <th> Win </th>
+                                <th> Draw </th>
+                                <th> Lost </th>
+                                <th> Points </th>
+                                <% if @football_base_fields.include?(@cup.field) %>
+                                    <th> Goals Difference </th>
+                                    <th> Goals For </th>
+                                    <th> Goals Against </th>
+                                    <th> Fouls </th>
+                                    <th> Yellow Cards </th>
+                                    <th> Red Cards </th>
+                                <% end %>
+                            </tr>
+                            </thead>
+                            <% league.ranking.each_with_index do |participant_id, rank| %>
+                                <% participant = Participant.find(participant_id) %>
+                                <% league_participant = LeagueParticipant.find_by(league: league, participant: participant)%>
+                                <tbody>
+                                    <td> <%= rank + 1 %> </td>
+                                    <td> <%= participant.name %> </td>
+                                    <td> <%= league_participant.number_of_wins %> </td>
+                                    <td> <%= league_participant.number_of_draws %> </td>
+                                    <td> <%= league_participant.number_of_losts %> </td>
+                                    <td> <%= league_participant.points %> </td>
+                                    <% if @football_base_fields.include?(@cup.field) %>
+                                        <td> <%= league_participant.number_of_earned_scores - league_participant.number_of_lost_scores %> </td>
+                                        <td> <%= league_participant.number_of_earned_scores %> </td>
+                                        <td> <%= league_participant.number_of_lost_scores %> </td>
+                                        <td> <%= league_participant.number_of_made_fouls %> </td>
+                                        <td> <%= league_participant.number_of_yellow_cards %> </td>
+                                        <td> <%= league_participant.number_of_red_cards %> </td>
+                                    <% end %>
+                                </tbody>
+                            <% end %>
+                        </table>
+                    <% end %>
+                    <br>
+                    <h4> Win Order of Groups </h4>
+                    <table>
+                        <% @cup.leagues.first.win_order.each do |win_factor| %>
+                            <tr>
+                                <td><%= League.win_factors.key(win_factor) %></td>
+                            </tr>
+                        <% end %>
+                    </table>
+                <% if @cup.knockouts.empty? %>
+                    <p>No knockout data available.</p>
+                <% else %>
+                    <h3>Knockout Details</h3>
+                    <div id="myDiagramDiv" style="width: 100%; height: 600px; background-color: #9E9E9E;"></div>
+                <% end %>
+            <% end %>
+            <% if generate_button_condition %>
+                <%# <%= button_to 'Generate Cup', generate_cup_path(@cup), method: :post %> %>
+            <% end %>
+        <% end %>
+        <% if add_button_condition %>
+            <button id="add-team-btn">Add Team</button>
+            <%# <%= button_to 'Add Team', new_participant_path, method: :get, remote: true %> %>
         <% end %>
     <% end %>
-    <% if add_button_condition %>
-        <button id="add-team-btn">Add Team</button>
-        <%# <%= button_to 'Add Team', new_participant_path, method: :get, remote: true %> %>
-    <% end %>
-<% end %>
+    
 
-<!-- Additional cup details -->
-
-<%= link_to 'Edit', edit_cup_path(@cup) %>
-<%= link_to 'Back', cups_path %>
-
-<!-- Modals -->
-
-<div id="add-team-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-        <button id="close-modal-btn">Close</button>
-        <h2>Add Team</h2>
-        <h3>Team Name: <span id="team-name"></span></h3>
-        <table id="players-table">
-            <thead>
-            <tr>
-                <th>Name</th>
-                <th>Username</th>
-            </tr>
-            </thead>
-            <tbody>
-            <!-- Player rows will be dynamically added here -->
-            </tbody>
-        </table>
-        <br>
-        <br>
-        <div id="existing-team-section">
-            <input type="text" id="search-team" placeholder="Search team by name">
-            <ul id="existing-team-results"></ul>
-            <button id="add-existing-team-btn">Add Existing Team</button>
+    <!-- Additional cup details -->
+    
+    <%= link_to 'Edit', edit_cup_path(@cup) %>
+    <%= link_to 'Back', cups_path %>
+    
+    <!-- Modals -->
+    
+    <div id="add-team-modal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <button id="close-modal-btn">Close</button>
+            <h2>Add Team</h2>
+            <h3>Team Name: <span id="team-name"></span></h3>
+            <table id="players-table">
+                <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Player rows will be dynamically added here -->
+                </tbody>
+            </table>
+            <br>
+            <br>
+            <div id="existing-team-section">
+                <input type="text" id="search-team" placeholder="Search team by name">
+                <ul id="existing-team-results"></ul>
+                <button id="add-existing-team-btn">Add Existing Team</button>
+            </div>
+            <div id="new-team-section">
+                <h3>Create New Team</h3>
+                <p>Enter a name for the new team:</p>
+                <input type="text" id="team-name" placeholder="Enter team name">
+                <button id="create-team-btn">Create</button>
+                <p>Add players to the team:</p>
+                <input type="text" id="search-player" placeholder="Search player by username">
+                <ul id="player-results"></ul>
+                <button id="add-player-btn">Add Player</button>
+            </div>
+            <br>
+            <button id="add-team-btn">Add Team</button>
         </div>
-        <div id="new-team-section">
-            <h3>Create New Team</h3>
-            <p>Enter a name for the new team:</p>
-            <input type="text" id="team-name" placeholder="Enter team name">
-            <button id="create-team-btn">Create</button>
-            <p>Add players to the team:</p>
-            <input type="text" id="search-player" placeholder="Search player by username">
-            <ul id="player-results"></ul>
-            <button id="add-player-btn">Add Player</button>
-        </div>
-        <br>
-        <button id="add-team-btn">Add Team</button>
     </div>
 </div>
 
+<script src="https://unpkg.com/gojs/release/go-debug.js"></script>
 <script>
     var modal = document.getElementById("add-team-modal");
     var addTeamBtn = document.getElementById("add-team-btn");
-    var closeModalBtn = document.getElementsByClassName("close-modal-btn");
+    var closeModalBtn = document.getElementById("close-modal-btn");
 
     // When the user clicks the button, open the modal
     addTeamBtn.addEventListener("click", function() {
@@ -279,7 +289,208 @@
     });
 </script>
 
+<script>
+    var participant_names = <%= raw @knockout.participants.pluck(:name).to_json %>;
+    function init() {
+        // Since 2.2 you can also author concise templates with method chaining instead of GraphObject.make
+        // For details, see https://gojs.net/latest/intro/buildingObjects.html
+        const $ = go.GraphObject.make;  // for conciseness in defining templates
+
+        myDiagram = new go.Diagram("myDiagramDiv",  // create a Diagram for the DIV HTML element
+            {"textEditingTool.starting": go.TextEditingTool.SingleClick,
+                "textEditingTool.textValidation": isValidScore,
+                layout: $(go.TreeLayout, { angle: 180 }),
+                "undoManager.isEnabled": true
+            });
+
+        // validation function for editing text
+        function isValidScore(textblock, oldstr, newstr) {
+            if (newstr === "") return true;
+            var num = parseInt(newstr, 10);
+            return !isNaN(num) && num >= 0 && num < 1000;
+        }
+
+        // define a simple Node template
+        myDiagram.nodeTemplate = $(go.Node, "Auto",
+            { selectable: false },
+            $(go.Shape, "Rectangle",
+            { fill: '#8C8C8C', stroke: null },
+            // Shape.fill is bound to Node.data.color
+            new go.Binding("fill", "color")),
+            $(go.Panel, "Table",
+            $(go.RowColumnDefinition, { column: 0, separatorStroke: "black", background: "#2D7761" }),
+            $(go.RowColumnDefinition, { column: 1, separatorStroke: "black", background: "#FFC0CB" }),
+            $(go.RowColumnDefinition, { row: 0, separatorStroke: "black" }),
+            $(go.RowColumnDefinition, { row: 1, separatorStroke: "black" }),
+            $(go.TextBlock, "",
+                {
+                    row: 0,
+                    wrap: go.TextBlock.None, margin: 5, width: 90,
+                    isMultiline: false, textAlign: 'left',
+                    font: '10pt  Segoe UI,sans-serif', stroke: 'white'
+                },
+                new go.Binding("text", "player1").makeTwoWay()),
+            $(go.TextBlock, "",
+                {
+                    row: 1,
+                    wrap: go.TextBlock.None, margin: 5, width: 90,
+                    isMultiline: false, textAlign: 'left',
+                    font: '10pt  Segoe UI,sans-serif', stroke: 'white'
+                },
+                new go.Binding("text", "player2").makeTwoWay()),
+            $(go.TextBlock, "",
+                {
+                    column: 1, row: 0,
+                    wrap: go.TextBlock.None, margin: 2, width: 25,
+                    isMultiline: false, editable: true, textAlign: 'center',
+                    font: '10pt  Segoe UI,sans-serif', stroke: 'black'
+                },
+                new go.Binding("text", "score1").makeTwoWay()),
+            $(go.TextBlock, "",
+                {
+                    column: 1, row: 1,
+                    wrap: go.TextBlock.None, margin: 2, width: 25,
+                    isMultiline: false, editable: true, textAlign: 'center',
+                    font: '10pt  Segoe UI,sans-serif', stroke: 'black'
+                },
+                new go.Binding("text", "score2").makeTwoWay())
+            )
+        );
+
+        // define the Link template
+        myDiagram.linkTemplate =
+        $(go.Link,
+            { routing: go.Link.Orthogonal, selectable: false },
+            $(go.Shape, { strokeWidth: 2, stroke: 'white' }));
+
+
+        // Generates the original graph from an array of player names
+        function createPairs(players) {
+            if (players.length % 2 !== 0) players.push('(empty)');
+            var startingGroups = players.length / 2;
+            var currentLevel = Math.ceil(Math.log(startingGroups) / Math.log(2));
+            var levelGroups = [];
+            for (var i = 0; i < startingGroups; i++) {
+                levelGroups.push(currentLevel + '-' + i);
+            }
+            var totalGroups = [];
+            console.log("startingGroups : " + startingGroups)
+            console.log("currentLevel : " + currentLevel)
+            console.log("levelGroups : " + levelGroups)
+            makeLevel(levelGroups, currentLevel, totalGroups, players);
+            for (var i = 0; i < totalGroups.length; i++) {
+                console.log("totalGroup #" + i + " :\n")
+                console.log("---key = " + totalGroups[i].key)
+                console.log("---parent = " + totalGroups[i].parent)
+                console.log("---player1 = " + totalGroups[i].player1)
+                console.log("---player2 = " + totalGroups[i].player2)
+                console.log("---parentNumber = " + totalGroups[i].parentNumber)
+            }
+            return totalGroups;
+        }
+
+        function makeLevel(levelGroups, currentLevel, totalGroups, players) {
+            console.log("***NOW MAKE LEVEL***")
+            currentLevel--;
+            var len = levelGroups.length;
+            var parentKeys = [];
+            var parentNumber = 0;
+            var p = '';
+            for (var i = 0; i < len; i++) {
+                if (parentNumber === 0) {
+                    p = currentLevel + '-' + parentKeys.length;
+                    parentKeys.push(p);
+                }
+
+                if (players !== null) {
+                    var p1 = players[i * 2];
+                    var p2 = players[(i * 2) + 1];
+                    totalGroups.push({
+                        key: levelGroups[i], parent: p, player1: p1, player2: p2, parentNumber: parentNumber
+                    });
+                } else {
+                    totalGroups.push({ key: levelGroups[i], parent: p, parentNumber: parentNumber });
+                }
+
+                parentNumber++;
+                if (parentNumber > 1) parentNumber = 0;
+            }
+
+            // after the first created level there are no player names
+            if (currentLevel >= 0) makeLevel(parentKeys, currentLevel, totalGroups, null)
+        }
+
+        function makeModel(players) {
+            var model = new go.TreeModel(createPairs(players));
+
+            model.addChangedListener(e => {
+                if (e.propertyName !== 'score1' && e.propertyName !== 'score2') return;
+                var data = e.object;
+                if (isNaN(data.score1) || isNaN(data.score2)) return;
+
+                // TODO: What happens if score1 and score2 are the same number?
+
+                // both score1 and score2 are numbers,
+                // set the name of the higher-score'd player in the advancing (parent) node
+                // if the data.parentNumber is 0, then we set player1 on the parent
+                // if the data.parentNumber is 1, then we set player2
+                var parent = myDiagram.findNodeForKey(data.parent);
+                if (parent === null) return;
+
+                var playerName = parseInt(data.score1) > parseInt(data.score2) ? data.player1 : data.player2;
+                if (parseInt(data.score1) === parseInt(data.score2)) playerName = "";
+                myDiagram.model.setDataProperty(parent.data, (data.parentNumber === 0 ? "player1" : "player2"), playerName);
+            });
+
+            myDiagram.model = model;
+
+            // provide initial scores for at most three pairings
+            for (var i = 0; i < Math.min(3, model.nodeDataArray.length); i++) {
+                var d = model.nodeDataArray[i];
+                if (d.player1 && d.player2) {
+                    // TODO: doesn't prevent tie scores
+                    model.setDataProperty(d, "score1", Math.floor(Math.random() * 100));
+                    model.setDataProperty(d, "score2", Math.floor(Math.random() * 100));
+                }
+            }
+        }
+
+        // makeModel(participant_names);
+        makeModel(['A1', 'A2', 'A3', 'A4', 'A5', 'A6', 'A7', 'A8', 'A9', 'A10', 'A11']);
+    } // end init
+    window.addEventListener('DOMContentLoaded', init);
+</script>
+
 <style>
+    html, body {
+        width: 100%;
+        height: 100%;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        /*    box-sizing: border-box; */
+    }
+
+    .navbar {
+        height: 4rem;
+    }
+
+    .cup-content {
+        padding: 2rem 0;
+        display: flex;
+        flex-direction: column;
+        gap: .5rem;
+    }
+
+    .page-container {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 4rem;
+        height: calc(100% - 4rem);
+    }
+
     /* CSS styles */
     h1 {
         font-size: 2rem;
@@ -295,7 +506,7 @@
 
     th, td {
         padding: 0.5rem;
-        border: 1px solid #ccc;
+        border: 1px solid #ec7676;
     }
 
     th {
@@ -326,34 +537,11 @@
         font-family: Arial, sans-serif;
     }
 
-    .bracket {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        font-family: Arial, sans-serif;
-    }
-
-    .round {
-        display: flex;
-        align-items: center;
-        margin-bottom: 20px;
-    }
-
-    .match {
-        display: flex;
-        align-items: center;
-        margin-right: 30px;
-    }
-
-    .participant {
-        border: 1px solid #000;
-        padding: 10px;
-        margin: 0 10px;
-    }
-
-    .spacer {
-        width: 100px;
-        height: 20px;
+    #myDiagramDiv {
+        width: 100%;
+        height: 600px;
+        background-color: #13d4ee;
+        border-radius: 5px;
+        margin: 4rem 0;
     }
 </style>
