@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_18_135508) do
+ActiveRecord::Schema[7.0].define(version: 2023_07_18_132335) do
   create_table "accesses", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.string "route"
     t.datetime "created_at", null: false
@@ -74,11 +74,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_135508) do
   create_table "knockout_nodes", charset: "utf8mb4", collation: "utf8mb4_0900_ai_ci", force: :cascade do |t|
     t.integer "level"
     t.integer "number"
+    t.bigint "knockout_id", null: false
+    t.bigint "winner_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "parent_node_id"
-    t.bigint "winner_id"
-    t.bigint "knockout_id", null: false
     t.index ["knockout_id"], name: "index_knockout_nodes_on_knockout_id"
     t.index ["parent_node_id"], name: "index_knockout_nodes_on_parent_node_id"
     t.index ["winner_id"], name: "index_knockout_nodes_on_winner_id"
@@ -107,15 +107,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_18_135508) do
     t.bigint "winner_id"
     t.date "start_date"
     t.date "end_date"
-    t.text "graph"
-    t.text "graph_assignment"
+    t.text "first_matches"
     t.boolean "third_place_match", default: false
     t.boolean "away_goal", default: false
     t.integer "state", default: 0, null: false
-    t.integer "number_of_rows"
-    t.integer "number_of_columns"
-    t.text "matches_hash"
-    t.text "winners_hash"
     t.index ["cup_id"], name: "index_knockouts_on_cup_id"
     t.index ["winner_id"], name: "index_knockouts_on_winner_id"
   end

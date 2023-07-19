@@ -91,23 +91,8 @@ PlayerParticipant.create(player: player_2_in_ping_pong_team_F, participant: ping
 
 knockout_for_team_ping_pong_knockout_cup = Knockout.create(is_round_trip: true, away_goal: false,
     third_place_match: false, start_date: Date.today - 5, state: 1, cup: team_ping_pong_knockout_cup,
-    graph: {0 => 6, 1 => 6, 3 => 7, 4 => 7, 6 => 8, 2 => 8, 7 => 9, 5 => 9, 8 => 10, 9 => 10},
-    graph_assignment: {0 => ping_pong_team_A.id, 1 => ping_pong_team_B.id,
-        2 => ping_pong_team_C.id, 3 => ping_pong_team_D.id,
-        4 => ping_pong_team_E.id, 5 => ping_pong_team_F.id,
-        6 => ping_pong_team_A.id, 7 => ping_pong_team_E.id,
-        8 => nil, 9 => nil, 10 => nil},
-    number_of_rows: 11, number_of_columns: 7,
-    matches_hash: {2=>{2=>[1,3], 5=>[5], 8=>[7,9], 11=>[11]},
-        4=>{4=>[2,5], 10=>[8,11]},
-        6=>{6=>[4,10]}},
-    winners_hash: {1=>{1=>ping_pong_team_A.id, 3=>ping_pong_team_B.id,
-        5=>ping_pong_team_C.id, 7=>ping_pong_team_D.id, 9=>ping_pong_team_E.id,
-        11=>ping_pong_team_F.id},
-        3=>{2=>ping_pong_team_A.id, 5=>ping_pong_team_C.id, 8=>ping_pong_team_E.id,
-        11=>ping_pong_team_F.id},
-        5=>{4=>-1, 10=>-1},
-        7=>{6=>-1}})
+    first_matches: {0=>[ping_pong_team_A.id, ping_pong_team_B.id], 1=>[ping_pong_team_C.id],
+        2=>[ping_pong_team_D.id, ping_pong_team_E.id], 3=>[ping_pong_team_F.id]})
 
 ### Cup Participants
 
@@ -854,17 +839,8 @@ CupParticipant.create(cup: individual_fifa23_comb_cup, participant: fifa23_team_
 knockout_for_individual_fifa23_comb_cup = Knockout.create(is_round_trip: true, away_goal: false,
     third_place_match: true, start_date: Date.today - 46, end_date: Date.today - 44,
     state: 2, cup: individual_fifa23_comb_cup,
-    graph: {0 => 4, 1 => 4, 2 => 5, 3 => 5, 4 => 6, 5 => 6},
-    graph_assignment: {0 => fifa23_team_A.id, 1 => fifa23_team_H.id,
-        2 => fifa23_team_F.id, 3 => fifa23_team_C.id,
-        4 => fifa23_team_A.id, 5 => fifa23_team_F.id,
-        6 => fifa23_team_F.id},
-    number_of_rows: 7, number_of_columns: 5,
-    matches_hash: {2=>{2=>[1,3], 6=>[5,7]}, 4=>{4=>[2,6]}},
-    winners_hash: {1=>{1=>fifa23_team_A.id, 3=>fifa23_team_H.id,
-        5=>fifa23_team_F.id, 7=>fifa23_team_C.id},
-        3=>{2=>fifa23_team_A.id, 6=>fifa23_team_F.id},
-        5=>{4=>fifa23_team_F.id}},
+    first_matches: {0=>[fifa23_team_A.id, fifa23_team_H.id],
+        1=>[fifa23_team_F.id, fifa23_team_C.id]},
     winner: fifa23_team_F)
 
 ### Knockout Participants
